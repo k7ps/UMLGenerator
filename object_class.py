@@ -33,5 +33,14 @@ class ObjectClass:
             draw.text((stPos.x, stPos.y), meth, fill='grey', font=field_font)
             stPos.y += namesize.y+2
 
+    def GetImageSize(self, nameFont, fieldFont):
+        rad = s.Set.rad
+        minlen = s.Set.minlen 
+
+        namesize = s.Point(*nameFont.getsize(self.__name))
+        size = s.Point(max(minlen, namesize.x+2*rad), namesize.y*(len(self.__vars)+len(self.__methods)+2))
+        
+        return size
+
 #a = ObjectClass('asf', ['a', 'b'], ['get', 'draw'], ['B'], [])
 #a.Print()

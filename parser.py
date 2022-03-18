@@ -1,8 +1,8 @@
 import inspect
 import sys
+
 import code
-import obj
-import copy
+import object_class as o
 
 path = './code_example.py'
 
@@ -40,7 +40,7 @@ def find_classes(a):
                     else:
                         variables.append(a[j])
                 else:
-                    b.append(obj.ObjectClass(name, variables, methods, parents, compositions))
+                    b.append(o.ObjectClass(name, variables, methods, parents, compositions))
                     break
 
     return b
