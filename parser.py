@@ -1,64 +1,80 @@
-import inspect
-import sys
-
-import code
+from crypt import methods
 import object_class as o
+import test_code as tsc
+path = 'test_code.py'
 
-path = './code_example.py'
+class Reader:
+    def read_code(path):
+        readed_code = []
+        with open(path, encoding='utf8') as f:
+            for i in f:
+                readed_code.append(i) # прочитали весь код построчно
+        return readed_code
 
-def read_code(path):
-    # a = [cls_name for cls_name, cls_obj in inspect.getmembers(code) if inspect.isclass(cls_obj)]
-    # return a
-    a = []
-    with open(path, encoding='utf8') as f:
-        for i in f:
-            a.append(i)#i.replace('    ', '\t')) # прочитали весь код построчно
 
-    i = 0
-    while i < len(a):   # Очистка кода от комментариев
-        for j in range(len(a[i])):
-            if a[i][j] == '#':
-                a.pop(i)
-                i -= 1
+class Parser:
+    def __read_name(start_str):
+        name = None
+        parents = []
+        parent_start = None
+        parent_end = None
+        name_end = None
+        for i in range(len(start_str)):
+            if start_str[i] == ':':
+                if name_end == None:
+                    name_end = i
                 break
-        i += 1
-    return a
+            if start_str[i] == '(':
+                name_end = i
+                parent_start = i + 1
+            if start_str[i] == ')':
+                parent_end = i
+        if parent_start != None:
+            parents = start_str[parent_start:parent_end].split()
+        name = start_str[6:name_end]
+        return name, parents
 
-def find_classes(a):
-    b = []
-    for i in range(len(a)):
-        if a[i][:5] == 'class':
-            name = a[i][6:]
-            methods = []
-            variables = []
-            parents = []
-            compositions = []
-            for j in range(i + 1, len(a)):
-                if a[j][:4] == '    ' and  a[j][4] != ' ':
-                    if a[j][4:7] == 'def':
-                        methods.append(a[j][8:])
+    def __read_methods(start_str):
+        name_start = 8 # First letter in name
+        name_end = None
+        for i in range(len(start_str)):
+            if start_str[i] == '(':
+                name_end = i
+                break
+        method_name = start_str[name_start:name_end]
+        return method_name
+
+    def __read_variables(start_str):
+        name_start = 4 # First letter in name
+        name_end = None
+        for i in range(len(start_str)):
+            if start_str[i] == '=':
+                name_end = i
+                break
+        variable_name = start_str[name_start:name_end]
+        return variable_name
+
+    def find_classes(readed_code):
+        class_list = []
+        for i in range(len(readed_code)):
+            if readed_code[i][:5] == 'class':
+                name, parents = Parser.__read_name(readed_code[i])
+                methods = []
+                variables = []
+                compositions = []
+                for j in range(i + 1, len(readed_code)):
+                    if readed_code[j][:4] == '    ':
+                        if readed_code[j][4:8] == 'def ':
+                            methods.append(Parser.__read_methods(readed_code[j]))
+                        elif readed_code[j][4] != ' ' and readed_code[j][4] != '#':
+                            variables.append(Parser.__read_variables(readed_code[j]))
                     else:
-                        variables.append(a[j])
-                else:
-                    b.append(o.ObjectClass(name, variables, methods, parents, compositions))
-                    break
+                        class_list.append(o.ObjectClass(name, variables, methods, parents, compositions))
+                        break
+        return class_list
 
-    return b
-    # for i in range(len(a)):
-    #     if a[i].find('class ') != -1:
-    #         b.append(a[i]) # нашли классы
-    # b[i] = 'class Animal' далее убираем слово class
-    # c = []
-    # for i in range(len(b)):
-    #     temp = b[i].split(' ') 
-    #     temp.pop(0)
-    #     temp[0] = temp[0][:-2]
-    #     c.append(temp[0])
-    # return c
-    # print(c) # в с хранятся названия классов 
-    # for i in c:
-        # print(i)
-a = read_code(path)
-b = find_classes(a)
-for i in b:
-    i.Print()
+
+# a = Reader.read_code(path)
+# b = Parser.find_classes(a)
+# for i in range(5):
+#     print(b[i].Print())
