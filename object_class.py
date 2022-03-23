@@ -10,7 +10,7 @@ class ObjectClass:
 
     def Print(self):
         print('>',self.__name)
-        print('\tVariables:', *self.__vars)
+        print('\tVariables:',*self.__vars,sep='  ')
         print('\tMethods:', *self.__methods)
         print('\tParents:', *self.__parents)
         print('\tCompositions:', *self.__compositions)

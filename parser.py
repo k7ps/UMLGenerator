@@ -1,15 +1,6 @@
 import object_class as o
-import reader
+import reader as r
 path = 'test_code.py'
-
-class Reader:
-    def read_code(path):
-        readed_code = []
-        with open(path, encoding='utf8') as f:
-            for i in f:
-                readed_code.append(i) # прочитали весь код построчно
-        return readed_code
-
 
 class Parser:
     def __read_name(start_str):
@@ -57,23 +48,23 @@ class Parser:
         class_list = []
         for i in range(len(readed_code)):
             if readed_code[i][:5] == 'class':
-                name, parents = Parser.__read_name(readed_code[i])
-                methods = []
-                variables = []
-                compositions = []
+                nm, ps = Parser.__read_name(readed_code[i])
+                ms = []
+                vs = []
+                cs = []
                 for j in range(i + 1, len(readed_code)):
                     if readed_code[j][:4] == '    ':
                         if readed_code[j][4:8] == 'def ':
-                            methods.append(Parser.__read_methods(readed_code[j]))
+                            ms.append(Parser.__read_methods(readed_code[j]))
                         elif readed_code[j][4] != ' ' and readed_code[j][4] != '#':
-                            variables.append(Parser.__read_variables(readed_code[j]))
+                            vs.append(Parser.__read_variables(readed_code[j]))
                     else:
-                        class_list.append(o.ObjectClass(name, variables, methods, parents, compositions))
+                        class_list.append(o.ObjectClass(nm, vs, ms, ps, cs))
                         break
         return class_list
 
-
-# a = Reader.read_code(path)
-# b = Parser.find_classes(a)
-# for i in range(5):
-#     print(b[i].Print())
+read = r.Reader()
+a = read.read_code(path)
+b = Parser.find_classes(a)
+for i in range(5):
+    print(b[i].Print())

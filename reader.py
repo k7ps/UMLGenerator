@@ -1,7 +1,11 @@
+
 class Reader:
-    def read_code(path):
+    def __init__(self, enc='utf8'):
+        self.__encode = enc
+
+    def read_code(self, path):
         readed_code = []
-        with open(path, encoding='utf8') as f:
+        with open(path, encoding=self.__encode) as f:
             for i in f:
                 readed_code.append(i) # прочитали весь код построчно
         return readed_code
