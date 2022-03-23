@@ -1,6 +1,5 @@
-from crypt import methods
 import object_class as o
-import test_code as tsc
+import reader
 path = 'test_code.py'
 
 class Reader:
