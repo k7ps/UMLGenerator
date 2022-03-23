@@ -12,6 +12,8 @@ class UI:
 
     def SetClasses(self, classes):
         self.__classes = classes
+        for c in classes:
+            c.Print()
 
     def DrawUML(self):
         startPos = s.Point(10,10)

@@ -9,11 +9,11 @@ class ObjectClass:
         self.__compositions = compositions
 
     def Print(self):
-        print('>',self.__name)
-        print('\tVariables:',*self.__vars,sep='  ')
-        print('\tMethods:', *self.__methods)
-        print('\tParents:', *self.__parents)
-        print('\tCompositions:', *self.__compositions)
+        print('>', self.__name)
+        print('\tVariables:',*self.__vars, sep='  ')
+        print('\tMethods:', *self.__methods, sep='  ')
+        print('\tParents:', *self.__parents, sep='  ')
+        print('\tCompositions:', *self.__compositions, sep='  ')
 
     def Draw(self, draw, font, field_font, pos):
         rad = s.Set.rad

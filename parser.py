@@ -1,9 +1,11 @@
 import object_class as o
 import reader as r
-path = 'test_code.py'
 
 class Parser:
-    def __read_name(start_str):
+    def __init__(self):
+        pass
+
+    def __ReadName(self, start_str):
         name = None
         parents = []
         parent_start = None
@@ -24,7 +26,7 @@ class Parser:
         name = start_str[6:name_end]
         return name, parents
 
-    def __read_methods(start_str):
+    def __ReadMethods(self, start_str):
         name_start = 8 # First letter in name
         name_end = None
         for i in range(len(start_str)):
@@ -34,7 +36,7 @@ class Parser:
         method_name = start_str[name_start:name_end]
         return method_name
 
-    def __read_variables(start_str):
+    def __ReadVariables(self, start_str):
         name_start = 4 # First letter in name
         name_end = None
         for i in range(len(start_str)):
@@ -44,27 +46,27 @@ class Parser:
         variable_name = start_str[name_start:name_end]
         return variable_name
 
-    def find_classes(readed_code):
+    def FindClasses(self, readed_code):
         class_list = []
         for i in range(len(readed_code)):
             if readed_code[i][:5] == 'class':
-                nm, ps = Parser.__read_name(readed_code[i])
+                nm, ps = self.__ReadName(readed_code[i])
                 ms = []
                 vs = []
                 cs = []
                 for j in range(i + 1, len(readed_code)):
                     if readed_code[j][:4] == '    ':
                         if readed_code[j][4:8] == 'def ':
-                            ms.append(Parser.__read_methods(readed_code[j]))
+                            ms.append(self.__ReadMethods(readed_code[j]))
                         elif readed_code[j][4] != ' ' and readed_code[j][4] != '#':
-                            vs.append(Parser.__read_variables(readed_code[j]))
+                            vs.append(self.__ReadVariables(readed_code[j]))
                     else:
                         class_list.append(o.ObjectClass(nm, vs, ms, ps, cs))
                         break
         return class_list
 
-read = r.Reader()
-a = read.read_code(path)
-b = Parser.find_classes(a)
-for i in range(5):
-    print(b[i].Print())
+# read = r.Reader()
+# a = read.read_code(path)
+# b = Parser.FindClasses(a)
+# for i in range(5):
+#     print(b[i].Print())

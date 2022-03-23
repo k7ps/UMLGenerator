@@ -10,4 +10,4 @@ class Controller:
     def Start(self):
         self.__engine.Read()
         self.__ui.SetClasses( self.__engine.GetClasses() )
-        self.__ui.DrawUML()
+        # self.__ui.DrawUML()
