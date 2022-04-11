@@ -22,7 +22,7 @@ class ObjectClass:
         namesize = s.Point(*font.getsize(self.__name))
         size = s.Point(max(minlen, namesize.x+2*rad), namesize.y*(len(self.__vars)+len(self.__methods)+2))
 
-        draw.rounded_rectangle((pos.x, pos.y, pos.x+size.x, pos.y+size.y), fill="black", radius=rad)
+        draw.rectangle((pos.x, pos.y, pos.x+size.x, pos.y+size.y), fill="black")
         draw.text((pos.x+(size.x-namesize.x)/2, pos.y+2), self.__name, fill='white', font=font)
         
         stPos = s.Point(pos.x+10, pos.y+namesize.y+3)

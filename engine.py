@@ -1,17 +1,19 @@
-import object_class as o
-import reader as r
-import parser as p
+import file as f
 
 class Engine:
-    def __init__(self):
-        self.__classes = []
-        self.__reader = r.Reader()
-        self.__parser = p.Parser()
-        self.__path = 'test_code.py'
+    def __init__(self, paths=['test_code.py']):
+        self.__paths = paths
+        self.__files = []
+        for path in self.__paths:
+            self.__files.append(f.PyLocFile(path))
 
     def Read(self):
-        readed_file = self.__reader.ReadCode(self.__path)
-        self.__classes = self.__parser.FindClasses(readed_file)
+        for file in self.__files:
+            file.Read()
 
     def GetClasses(self):
-        return self.__classes
+        classes = []
+        for file in self.__files:
+            for cl in file.GetClasses():
+                classes.append(cl)
+        return classes

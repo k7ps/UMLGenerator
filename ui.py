@@ -12,7 +12,7 @@ class UI:
 
     def SetClasses(self, classes):
         self.__classes = classes
-        #for c in classes:
+        # for c in classes:
         #    c.Print()
 
     def DrawUML(self):

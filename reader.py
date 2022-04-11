@@ -1,11 +1,20 @@
-
 class Reader:
-    def __init__(self, enc='utf8'):
-        self.__encode = enc
+    def __init__(self, path, enc='utf-8'):
+        self._path = path
+        self._encode = enc
 
-    def ReadCode(self, path):
+    def ReadFrom(self):
+        pass
+
+
+class LocReader(Reader):
+    def __init__(self, path, enc='utf-8'):
+        super().__init__(path, enc=enc)
+
+    def ReadFrom(self):
         readed_code = []
-        with open(path, encoding=self.__encode) as f:
+        with open(self._path, encoding=self._encode) as f:
             for i in f:
                 readed_code.append(i) # прочитали весь код построчно
         return readed_code
+

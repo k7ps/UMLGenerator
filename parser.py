@@ -1,10 +1,15 @@
 import object_class as o
-import reader as r
 
 class Parser:
-    def __init__(self):
+    def Parse(self, readed_code):
         pass
 
+
+
+class PyParser(Parser):
+    def __init__(self):
+        pass
+    
     def __ReadName(self, start_str):
         name = None
         parents = []
@@ -46,7 +51,7 @@ class Parser:
         variable_name = start_str[name_start:name_end]
         return variable_name
 
-    def FindClasses(self, readed_code):
+    def Parse(self, readed_code):
         class_list = []
         for i in range(len(readed_code)):
             if readed_code[i][:5] == 'class':
