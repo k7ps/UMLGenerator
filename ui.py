@@ -1,14 +1,14 @@
-from PIL import Image, ImageDraw, ImageColor, ImageFont
-
 import settings as s
 import object_class as o
+import drawer as dr
+import graphviz as gv
+import os
 
 class UI:
     def __init__(self):
-        self.__size = s.Point(500, 500)
-        self.__img = Image.new("RGB", (self.__size.x, self.__size.y), color='white')
-        self.__draw = ImageDraw.Draw(self.__img)
         self.__classes = []
+        self.__drawer = dr.HtmlClDrawer()
+        self.__uml = gv.Digraph('uml', format='png')
 
     def SetClasses(self, classes):
         self.__classes = classes
@@ -16,17 +16,13 @@ class UI:
         #    c.Print()
 
     def DrawUML(self):
-        startPos = s.Point(10,10)
-        pos = s.Point(startPos.x, startPos.y)
-        maxHeight = 0
+        cod = 'A'
         for cl in self.__classes:
-            sz = cl.GetImageSize(s.Set.nameFont, s.Set.fieldFont) 
-            if pos.x + sz.x > self.__size.x:
-                pos.x = startPos.x
-                pos.y += maxHeight+4
-                maxLastY = sz.y
-            cl.Draw(self.__draw, s.Set.nameFont, s.Set.fieldFont, pos)
-            maxHeight = max(maxHeight, sz.y)
-            pos.x += sz.x + 5
+            self.__uml.node(cod, cl.Draw(self.__drawer), shape='plaintext')
+            cod = chr(ord(cod)+1)
+        
+        self.__uml.render('uml', view=True) 
+        
+        path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uml')
+        os.remove(path)
 
-        self.__img.save("ex.png", "PNG")
