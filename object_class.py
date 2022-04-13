@@ -15,6 +15,17 @@ class ObjectClass:
         print('\tParents:', *self.__parents, sep='  ')
         print('\tCompositions:', *self.__compositions, sep='  ')
 
-    def Draw(self, drawer):
-        return drawer.Draw(self.__name, self.__vars, self.__methods)
+    def Get(self):
+        return (self.__name, self.__vars, self.__methods)
 
+    def GetName(self):
+        return self.__name
+
+    def GetParents(self):
+        return self.__parents
+
+    def GetComps(self):
+        return self.__compositions
+
+    def GetVars(self):
+        return self.__vars

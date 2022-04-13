@@ -16,11 +16,20 @@ class UI:
         #    c.Print()
 
     def DrawUML(self):
-        cod = 'A'
         for cl in self.__classes:
-            self.__uml.node(cod, cl.Draw(self.__drawer), shape='plaintext')
-            cod = chr(ord(cod)+1)
+            self.__uml.node(cl.GetName(), self.__drawer.Draw(*cl.Get(), cl.GetComps()), shape='plaintext')
         
+        for cl in self.__classes:
+            for p in cl.GetParents():
+                self.__uml.edge(p, cl.GetName())
+
+            cs = cl.GetComps()
+            key = 1
+            for var in cl.GetVars():
+                if cs.get(var) != None:
+                    self.__uml.edge(cs[var],f'{cl.GetName()}:f{key}',arrowhead='onormal')
+                    key += 1
+                    
         self.__uml.render('uml', view=True) 
         
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uml')

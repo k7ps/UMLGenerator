@@ -1,4 +1,5 @@
 import file as f
+import object_class as o
 
 class Engine:
     def __init__(self, paths=['test_code.py']):
@@ -13,7 +14,13 @@ class Engine:
 
     def GetClasses(self):
         classes = []
-        for file in self.__files:
-            for cl in file.GetClasses():
-                classes.append(cl)
+        #for file in self.__files:
+        #    for cl in file.GetClasses():
+        #        classes.append(cl)
+        classes = [o.ObjectClass('Animal',['point','health','name'],['Heal()','Upgrade()'],[],{}),
+                   o.ObjectClass('Weapon',['type','damage'],['Hit()'],[],{}),
+                   o.ObjectClass('Shotgun',['bullet','clip'],['Shoot()','Reload()'],['Weapon'],{}),
+                   o.ObjectClass('Cat',['weapon','voice'],['Meow()','Kill()'],['Animal'],{'weapon':'Weapon'}),
+                   o.ObjectClass('Dog',[],[],['Animal'],{}),
+                   o.ObjectClass('Pigeon',[],[],['Animal'],{})]
         return classes
