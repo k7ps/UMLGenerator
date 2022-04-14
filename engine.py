@@ -22,5 +22,7 @@ class Engine:
                    o.ObjectClass('Shotgun',['bullet','clip'],['Shoot()','Reload()'],['Weapon'],{}),
                    o.ObjectClass('Cat',['weapon','voice'],['Meow()','Kill()'],['Animal'],{'weapon':'Weapon'}),
                    o.ObjectClass('Dog',[],[],['Animal'],{}),
-                   o.ObjectClass('Pigeon',[],[],['Animal'],{})]
+                   o.ObjectClass('Bird',[],[],['Animal'],{}),
+                   o.ObjectClass('Dogocat',[],[],['Cat','Dog'],{}),
+                   o.ObjectClass('Pigeon',[],[],['Bird'],{})]
         return classes
