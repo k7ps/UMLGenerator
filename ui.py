@@ -23,12 +23,8 @@ class UI:
             for p in cl.GetParents():
                 self.__uml.edge(p, cl.GetName())
 
-            cs = cl.GetComps()
-            key = 1
-            for var in cl.GetVars():
-                if cs.get(var) != None:
-                    self.__uml.edge(cs[var],f'{cl.GetName()}:f{key}',arrowhead='onormal')
-                    key += 1
+            for var in cl.GetComps():
+                self.__uml.edge(cl.GetComps()[var],f'{cl.GetName()}:{var}',arrowhead='onormal')
                     
         self.__uml.render('uml', view=True) 
         

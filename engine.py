@@ -13,10 +13,14 @@ class Engine:
             file.Read()
 
     def GetClasses(self):
+        return self.__example()
         classes = []
-        #for file in self.__files:
-        #    for cl in file.GetClasses():
-        #        classes.append(cl)
+        for file in self.__files:
+            for cl in file.GetClasses():
+                classes.append(cl)
+        return classes
+
+    def __example(self):
         classes = [o.ObjectClass('Animal',['point','health','name'],['Heal()','Upgrade()'],[],{}),
                    o.ObjectClass('Weapon',['type','damage'],['Hit()'],[],{}),
                    o.ObjectClass('Shotgun',['bullet','clip'],['Shoot()','Reload()'],['Weapon'],{}),

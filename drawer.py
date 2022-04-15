@@ -1,45 +1,77 @@
 import settings as s
 
+
 class ClDrawer:
     def Draw(self, name, vs, ms, cs):
         pass
 
+
 class HtmlClDrawer(ClDrawer):
     def __init__(self):
-        pass
+        self.__roundTable = '<<table border="1" style="rounded">'
+        self.__endTable = '</table>>'
 
-    def Draw(self, name, vs, ms, cs):
-        drow = '<<table border="1" style="rounded">'
-        drow += self.__AddCell(name, bgcolor="yellow", style="rounded", height=25)
 
-        if len(vs) == 0:
-            drow += self.__AddCell('', height=5)
-        key = 1
-        for var in vs:
-            if cs.get(var) == None:
-                drow += self.__AddCell(var, align='left')
+    def Draw(self, className, variables, methods, compositions):
+        strDraw = self.__roundTable   
+        strDraw += self.__DrawClassName (className)
+        strDraw += self.__DrawVars (variables, compositions)
+        strDraw += self.__DrawMethods (methods)
+        strDraw += self.__endTable
+        return strDraw
+
+
+
+    def __DrawClassName(self, name):
+        return self.__AddCell(name, align="center", bgcolor="yellow", style="rounded", height=25)
+
+
+    def __DrawVars(self, variables, compositions):
+        if len(variables) == 0:
+            return self.__AddEmptyCell()
+
+        strVars = ''
+        for var in variables:
+            if compositions.get(var) == None:
+                strVars += self.__AddCell (var)
             else:
-                drow += self.__AddCell(var, align='left',port=f'f{key}')
-                key+=1
+                strVars += self.__AddPortCell (var)
 
-        first = True
-        if len(ms) == 0:
-            drow += self.__AddCell('', bound=True, height=10, border=1)
-        for meth in ms:
-            if first:
-                drow += self.__AddCell(meth, align='left', bound=True, border=1)
-                first = False
-            else:
-                drow += self.__AddCell(meth, align='left')
+        return strVars
 
-        drow += '</table>>'
-        return drow
-        
-    def __AddCell(self,name,align="center",bound=False,border=0,bgcolor='transparent',width=None,height=None,port=None,style=None):
+
+    def __DrawMethods(self, methods):
+        if len(methods) == 0:
+            return self.__AddEmptyCell (upperbound=True)
+
+        strMethods = ''
+        strMethods += self.__AddUpperBoundCell (methods[0])
+        for i in range(1, len(methods)):
+            strMethods += self.__AddCell (methods[i])
+
+        return strMethods
+
+
+
+    def __AddPortCell(self, name):
+        return self.__AddCell (name, port=name)
+
+    def __AddUpperBoundCell(self, name):
+        return self.__AddCell (name, upperbound=True, border=1) 
+
+    def __AddEmptyCell(self, upperbound=False):
+        if upperbound:
+            return self.__AddCell ('', upperbound=True, height=10, border=1)
+        return self.__AddCell ('', height=5)
+
+
+
+    def __AddCell(self, name, align="left", upperbound=False, border=0, bgcolor='transparent', 
+                  width=None, height=None, port=None, style=None):
         cell = f'<tr><td border="{border}" align="{align}" bgcolor="{bgcolor}" '
         if style != None:
             cell += f'style="{style}" ' 
-        if bound:
+        if upperbound:
             cell += f'sides="t" '
         if width != None:
             cell += f'width="{width}"'
