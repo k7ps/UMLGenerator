@@ -2,7 +2,7 @@ import settings as s
 
 
 class ClDrawer:
-    def Draw(self, className, variables, methods, compositions):
+    def Draw(self, className, fields, compositions):
         pass
 
 
@@ -12,45 +12,46 @@ class HtmlClDrawer(ClDrawer):
         self.__endTable = '</table>>'
 
 
-    def Draw(self, className, variables, methods, compositions):
+    def Draw(self, className, fields, compositions, aggregations):
         strDraw = self.__roundTable   
         strDraw += self.__DrawClassName (className)
-        strDraw += self.__DrawVars (variables, compositions)
-        strDraw += self.__DrawMethods (methods)
+        strDraw += self.__DrawFields (fields, compositions, aggregations)
         strDraw += self.__endTable
         return strDraw
-
 
 
     def __DrawClassName(self, name):
         return self.__AddCell(name, align="center", bgcolor="yellow", style="rounded", height=25)
 
+    def __IsMethod(self, method):
+        return len(method)>2 and method[-2:] == '()'
 
-    def __DrawVars(self, variables, compositions):
-        if len(variables) == 0:
-            return self.__AddEmptyCell()
-
+    def __DrawFields(self, fields, compositions, aggregations):
         strVars = ''
-        for var in variables:
-            if compositions.get(var) == None:
-                strVars += self.__AddCell (var)
-            else:
-                strVars += self.__AddPortCell (var)
-
-        return strVars
-
-
-    def __DrawMethods(self, methods):
-        if len(methods) == 0:
-            return self.__AddEmptyCell (upperbound=True)
-
         strMethods = ''
-        strMethods += self.__AddUpperBoundCell (methods[0])
-        for i in range(1, len(methods)):
-            strMethods += self.__AddCell (methods[i])
 
-        return strMethods
+        for field in fields:
+            if self.__IsMethod(field):
+                strMethods += self.__DrawMethod(field, len(strMethods)==0)
+            else:
+                strVars += self.__DrawVar(field, compositions, aggregations)
 
+        if not strVars:
+            strVars += self.__AddEmptyCell()
+        if not strMethods:
+            strMethods += self.__AddEmptyCell (upperbound=True)
+
+        return strVars + strMethods
+
+    def __DrawVar(self, var, compositions, aggregations):
+        if compositions.get(var) != None or aggregations.get(var) != None:
+            return self.__AddPortCell (var)
+        return self.__AddCell (var)
+
+    def __DrawMethod(self, method, empty):
+        if empty:
+            return self.__AddUpperBoundCell (method)
+        return self.__AddCell (method)
 
 
     def __AddPortCell(self, name):

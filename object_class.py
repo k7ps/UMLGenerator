@@ -1,5 +1,6 @@
 import settings as s
 
+
 class ClassInteraction:
     def __init__(self, parents, compositions, aggregations, clusters):
         self.__parents = parents
@@ -22,27 +23,13 @@ class ClassInteraction:
 
 
 class ObjectClass:
-    def __init__(self, name, variables, methods, interactions):
+    def __init__(self, name, fields, interactions):
         self.__name = name
-        self.__vars = variables
-        self.__methods = methods
+        self.__fields = fields
         self.__interactions = interactions
 
-    def __init__(self, name, variables, methods, parents, compositions):
-        self.__name = name
-        self.__vars = variables
-        self.__methods = methods
-        self.__interactions = ClassInteraction(parents, compositions, {}, [])
-
-    def Print(self):
-        print('>', self.__name)
-        print('\tVariables:',*self.__vars, sep='  ')
-        print('\tMethods:', *self.__methods, sep='  ')
-        print('\tParents:', *self.__parents, sep='  ')
-        print('\tCompositions:', *self.__compositions, sep='  ')
-
     def Get(self):
-        return (self.__name, self.__vars, self.__methods)
+        return (self.__name, self.__fields)
 
     def GetName(self):
         return self.__name
@@ -58,3 +45,12 @@ class ObjectClass:
 
     def GetClusters(self):
         return self.__interactions.GetClusters()
+    
+
+    def Print(self):
+        print('>', self.__name)
+        print('\tFields:',*self.__fields, sep='  ')
+        print('\tParents:', *self.GetParents(), sep='  ')
+        print('\tCompositions:', *self.GetCompositions(), sep='  ')
+        print('\tAggregations:', *self.GetAggregations(), sep='  ')
+        print('\tClusters:', *self.GetClusters(), sep='  ')

@@ -58,7 +58,7 @@ class PyParser(Parser):
                 nm, ps = self.__ReadName(readed_code[i])
                 ms = []
                 vs = []
-                cs = []
+                cs = {}
                 for j in range(i + 1, len(readed_code)):
                     if readed_code[j][:4] == '    ':
                         if readed_code[j][4:8] == 'def ':
@@ -66,7 +66,7 @@ class PyParser(Parser):
                         elif readed_code[j][4] != ' ' and readed_code[j][4] != '#':
                             vs.append(self.__ReadVariables(readed_code[j]))
                     else:
-                        class_list.append(o.ObjectClass(nm, vs, ms, ps, cs))
+                        class_list.append(o.ObjectClass(nm, vs+ms, o.ClassInteraction(ps, cs,{},[])))
                         break
         return class_list
 

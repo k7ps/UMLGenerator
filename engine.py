@@ -21,12 +21,12 @@ class Engine:
         return classes
 
     def __example(self):
-        classes = [o.ObjectClass('Animal',['point','health','name'],['Heal()','Upgrade()'],[],{}),
-                   o.ObjectClass('Weapon',['type','damage'],['Hit()'],[],{}),
-                   o.ObjectClass('Shotgun',['bullet','clip'],['Shoot()','Reload()'],['Weapon'],{}),
-                   o.ObjectClass('Cat',['weapon','voice'],['Meow()','Kill()'],['Animal'],{'weapon':'Weapon'}),
-                   o.ObjectClass('Dog',[],[],['Animal'],{}),
-                   o.ObjectClass('Bird',[],[],['Animal'],{}),
-                   o.ObjectClass('Dogocat',[],[],['Cat','Dog'],{}),
-                   o.ObjectClass('Pigeon',[],[],['Bird'],{})]
+        classes = [o.ObjectClass('Animal',['point','health','name','Heal()','Upgrade()'],o.ClassInteraction([],{},{},[])),
+                   o.ObjectClass('Weapon',['type','damage','Hit()'], o.ClassInteraction([],{},{},['Gun']) ),
+                   o.ObjectClass('Shotgun',['bullet','clip','Shoot()','Reload()'], o.ClassInteraction(['Weapon'],{},{},['Gun']) ),
+                   o.ObjectClass('Cat',['weapon','voice','Meow()','Kill()'],o.ClassInteraction(['Animal'],{'weapon':'Weapon'},{},[])),
+                   o.ObjectClass('Dog',[],o.ClassInteraction(['Animal'],{},{},[])),
+                   o.ObjectClass('Bird',[],o.ClassInteraction(['Animal'],{},{},[])),
+                   o.ObjectClass('Dogocat',[],o.ClassInteraction(['Cat','Dog'],{},{},[])),
+                   o.ObjectClass('Pigeon',['pet'],o.ClassInteraction(['Bird'],{},{'pet':'Dog'},[]))]
         return classes
