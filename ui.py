@@ -17,14 +17,14 @@ class UI:
 
     def DrawUML(self):
         for cl in self.__classes:
-            self.__uml.node(cl.GetName(), self.__drawer.Draw(*cl.Get(), cl.GetComps()), shape='plaintext')
+            self.__uml.node(cl.GetName(), self.__drawer.Draw(*cl.Get(), cl.GetCompositions()), shape='plaintext')
         
         for cl in self.__classes:
             for p in cl.GetParents():
                 self.__uml.edge(p, cl.GetName())
 
-            for var in cl.GetComps():
-                self.__uml.edge(cl.GetComps()[var],f'{cl.GetName()}:{var}',arrowhead='onormal')
+            for var in cl.GetCompositions():
+                self.__uml.edge(cl.GetCompositions()[var], f'{cl.GetName()}:{var}', arrowhead='onormal')
                     
         self.__uml.render('uml', view=True) 
         

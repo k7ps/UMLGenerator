@@ -2,7 +2,7 @@ import settings as s
 
 
 class ClDrawer:
-    def Draw(self, name, vs, ms, cs):
+    def Draw(self, className, variables, methods, compositions):
         pass
 
 
