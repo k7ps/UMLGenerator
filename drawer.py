@@ -8,7 +8,7 @@ class ClDrawer:
 
 class HtmlClDrawer(ClDrawer):
     def __init__(self):
-        self.__roundTable = '<<table border="1" style="rounded">'
+        self.__roundTable = f'<<table border="{s.Set.clBorder}" style="{s.Set.clStyle}">'
         self.__endTable = '</table>>'
 
 
@@ -21,7 +21,7 @@ class HtmlClDrawer(ClDrawer):
 
 
     def __DrawClassName(self, name):
-        return self.__AddCell(name, align="center", bgcolor="yellow", style="rounded", height=25)
+        return self.__AddCell(name, align="center", bgcolor=s.Set.nameCol, style="rounded", height=s.Set.nameHeight)
 
     def __IsMethod(self, method):
         return len(method)>2 and method[-2:] == '()'
@@ -58,12 +58,12 @@ class HtmlClDrawer(ClDrawer):
         return self.__AddCell (name, port=name)
 
     def __AddUpperBoundCell(self, name):
-        return self.__AddCell (name, upperbound=True, border=1) 
+        return self.__AddCell (name, upperbound=True, border=s.Set.splitThick) 
 
     def __AddEmptyCell(self, upperbound=False):
         if upperbound:
-            return self.__AddCell ('', upperbound=True, height=10, border=1)
-        return self.__AddCell ('', height=5)
+            return self.__AddCell ('', upperbound=True, height=s.Set.emptyBoundCellHeight, border=s.Set.splitThick)
+        return self.__AddCell ('', height=s.Set.emptyCellHeight)
 
 
 
@@ -80,5 +80,9 @@ class HtmlClDrawer(ClDrawer):
             cell += f'height="{height}"'
         if port != None:
             cell += f'port="{port}" '
-        cell += f'>{name}</td></tr>'
+
+        if name != "":
+            cell += f'><font point-size="{s.Set.clFontSize}">{name}</font></td></tr>'
+        else:
+            cell += f'></td></tr>'
         return cell
