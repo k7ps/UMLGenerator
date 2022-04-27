@@ -23,7 +23,7 @@ class Engine:
     def __example(self):
         classes = [o.ObjectClass('Animal',['point','health','name','Heal()','Upgrade()'],o.ClassInteraction([],{},{},[])),
                    o.ObjectClass('Weapon',['type','damage','Hit()'], o.ClassInteraction([],{},{},['Gun']) ),
-                   o.ObjectClass('Shotgun',['bullet','clip','Shoot()','Reload()'], o.ClassInteraction(['Weapon'],{},{},['Gun']) ),
+                   o.ObjectClass('Shotgun',['bullet','clip','Shoot()','Reload()'], o.ClassInteraction(['Weapon'],{},{},['Types','Gun']) ),
                    o.ObjectClass('Cat',['weapon','voice','Meow()','Kill()'],o.ClassInteraction(['Animal'],{'weapon':'Weapon'},{},[])),
                    o.ObjectClass('Dog',[],o.ClassInteraction(['Animal'],{},{},[])),
                    o.ObjectClass('Bird',[],o.ClassInteraction(['Animal'],{},{},[])),

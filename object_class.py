@@ -20,6 +20,9 @@ class ClassInteraction:
     def GetClusters(self):
         return self.__clusters
 
+    def SetClusters(self, clusters):
+        self.__clusters = clusters
+
 
 
 class ObjectClass:
@@ -46,6 +49,8 @@ class ObjectClass:
     def GetClusters(self):
         return self.__interactions.GetClusters()
     
+    def SetClusters(self, clusters):
+        self.__interactions.SetClusters (clusters)
 
     def Print(self):
         print('>', self.__name)
