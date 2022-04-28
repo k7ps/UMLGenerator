@@ -13,7 +13,7 @@ class Engine:
             file.Read()
 
     def GetClasses(self):
-        return self.__example()
+        # return self.__example()
         classes = []
         for file in self.__files:
             for cl in file.GetClasses():

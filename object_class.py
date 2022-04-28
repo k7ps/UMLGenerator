@@ -56,6 +56,6 @@ class ObjectClass:
         print('>', self.__name)
         print('\tFields:',*self.__fields, sep='  ')
         print('\tParents:', *self.GetParents(), sep='  ')
-        print('\tCompositions:', *self.GetCompositions(), sep='  ')
-        print('\tAggregations:', *self.GetAggregations(), sep='  ')
+        print('\tCompositions:', self.GetCompositions(), sep='  ')
+        print('\tAggregations:', self.GetAggregations(), sep='  ')
         print('\tClusters:', *self.GetClusters(), sep='  ')
