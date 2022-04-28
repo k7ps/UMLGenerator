@@ -1,59 +1,53 @@
-from calendar import c
-
-class B:
-    a = 10
-
-class A:
-    def __init__(self, a, b):
-        self.a:B = a  #!UML A
-        self.b = b
-
 class Animal:
-    a = 10
-    b = 11
-    def abc(c):
-        return c*2
-    def abs(c):
-        return c**2
-    ab = 2
-    # class B:
-        # pass
+	def __init__(self):
+		self.point = 1
+		self.health = 1
+		self.name = ""
+	def Heal(self):
+		self.health=100
+	def Upgrade(self):
+		self.point += 1
 
-class Grass:
-    def __init__(self):
-        super().__init__()
-        self.b: int = 10
-        self.b += 2
-    def jump(self):
-        pass
-    r = 1
+class Weapon:
+	def __init__(self):
+		self.type = None
+		self.damage = 10
+	def Hit(self, animal):
+		animal.health -= damage
+		
+class Shotgun(Weapon):
+	def __init__(self):
+		self.bullet = 10
+		self.clip = 15
+	def Shoot(self):
+		Hit()
+	def Reload(self):
+		self.bullet = 10
 
-class Human(Animal):
-    def __init__(self):
-        super().__init__()
-    c:int = 1
-    d = 2
+class Cat(Animal):
+	def __init__(self):
+		self.weapon: Shotgun = Shotgun()
+		self.voice = "meow"
+	def Meow(self):
+		print(self.voice)
+	def Kill(self):
+		self.weapon.Shoot()
 
-class Bybyzian(Animal, Grass):
-    def __init__(self):
-        super().__init__()
-    c = 1
-    d = 2
+class Dog(Animal):
+	pass
 
+class Bird(Animal):
+	pass
 
-class ObjectClass:
-    name = None
-    variables = []
-    methods = []
-    parents = []
-    compositions = []
+class Pigeon(Bird):
+	def __init__(self):
+		self.pet: Dog = Dog()
 
-def afaf():
-    class B:
-        asfaf = 10
-        class D:
-            ghu = 2138
-            def ok(self):
-                print('ok')
-    a = B().D()
-    a.ok()
+class Dogocat(Cat, Dog):
+	pass
+	pass
+	pass
+	pass
+	pass
+	
+	

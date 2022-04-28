@@ -54,7 +54,7 @@ class ObjectClass:
 
     def Print(self):
         print('>', self.__name)
-        print('\tFields:',*self.__fields, sep='  ')
+        print('\tFields:',*self.__fields, sep=',')
         print('\tParents:', *self.GetParents(), sep='  ')
         print('\tCompositions:', self.GetCompositions(), sep='  ')
         print('\tAggregations:', self.GetAggregations(), sep='  ')

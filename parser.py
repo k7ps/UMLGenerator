@@ -46,7 +46,7 @@ class PyParser(Parser):
         parents = parents_str.split(sep=',')
         if not haveParents:
             parents = []
-        return name, parents
+        return name.split(sep=':')[0], parents
 
     def __ReadVariable(self, start_str):
         var_str = self.__DeleteSpaces(start_str)
@@ -97,13 +97,13 @@ class PyParser(Parser):
 
     def Parse(self, readed_code):
         class_list = []
+        tab = 4
+        k = 0 
+        while tab == 0 and k < len(readed_code):
+            tab = self.__CalculateTab(a[k])
+            k += 1
         for i in range(len(readed_code)):
             if readed_code[i][:5] == 'class':
-                tab = 0
-                k = i
-                while tab == 0:
-                    tab = self.__CalculateTab(a[k + 1])
-                    k += 1
                 name, parents = self.__ReadName(readed_code[i])
                 fields = []
                 compositions = {}
@@ -138,9 +138,9 @@ class PyParser(Parser):
 # b = PyParser()
 # c = b.Parse(a)
 # print(c)
-b = PyParser()
+#b = PyParser()
 # c = b._PyParser__ReadName("class Parser(Parser,Ashdhkasdjkasdjkasd,OK):")
-c = b._PyParser__ReadVariable("        self.a:B = a  #!UML A")
+#c = b._PyParser__ReadVariable("        self.a:B = a  #!UML A")
 # c = b._PyParser__ReadMethod('  def aefaf(ok = "__init__"):')
 # c = b._PyParser__ReadInit([' def __init__(a,b,c,d=","):'],0)
 # print(c)
