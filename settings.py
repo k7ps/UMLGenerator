@@ -1,7 +1,8 @@
 class Set: 
+    umlSign = '#@UML'
     imgFormat = 'png'
 # Classes
-    clFont = 'Times-Roman'
+    clFont = 'Arial'
     clFontSize = 14
     clStyle = 'rounded' 
     clBorder = 1

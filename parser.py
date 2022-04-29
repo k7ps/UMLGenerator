@@ -1,26 +1,16 @@
 import object_class as o
 
-def ReadFrom(path):
-    readed_code = []
-    with open(path, encoding='utf-8') as f:
-        for i in f:
-            readed_code.append(i) # прочитали весь код построчно
-    return readed_code
-a = ReadFrom('test_code.py')
-
 
 class Parser:
     def Parse(self, readed_code):
         pass
 
 
-
-
 class PyParser(Parser):           
     def __init__(self):
         self.__initDef = "__init__"
         self.__funcDef = "def "
-        self.__indicator = "#!UML"
+        self.__indicator = "#@UML"
         self.__aggrIndicator = "aggr"
         self.__compIndicator = "comp"
         self.__varDef = "self."
@@ -92,7 +82,7 @@ class PyParser(Parser):
 
     def __ReadMethod(self, start_str):
         method_str = self.__DeleteSpaces(start_str)
-        method_str = method_str[len(self.__funcDef):]
+        method_str = method_str[len(self.__funcDef)-1:]
         return method_str.split(sep='(')[0]+'()'
 
     def Parse(self, readed_code):
@@ -100,7 +90,7 @@ class PyParser(Parser):
         tab = 4
         k = 0 
         while tab == 0 and k < len(readed_code):
-            tab = self.__CalculateTab(a[k])
+            tab = self.__CalculateTab(readed_code[k])
             k += 1
         for i in range(len(readed_code)):
             if readed_code[i][:5] == 'class':
