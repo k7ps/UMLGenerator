@@ -1,4 +1,4 @@
-import controller as c
+from controller import *
 
-cont = c.Controller()
+cont = Controller()
 cont.Start()

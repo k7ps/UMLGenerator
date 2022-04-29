@@ -1,8 +1,10 @@
-import settings as s
+from settings import *
+
 
 class Formator:
     def FormatCode(code):
         pass
+
 
 class PyFormator(Formator):
     __comSign = '#'
@@ -17,7 +19,7 @@ class PyFormator(Formator):
     def __DeleteComments(code):
         for i in range(len(code)):
             com = code[i].find(PyFormator.__comSign)
-            if com != -1 and com != code[i].find(s.Set.umlSign):
+            if com != -1 and com != code[i].find(Set.umlSign):
                 code[i] = code[i][:com]
             elif len(code[i]) > 0 and code[i][-1:] == '\n':
                 code[i] = code[i][:-1]

@@ -1,5 +1,5 @@
 class Set: 
-    umlSign = '#@UML'
+    pyUmlSign = '#@UML'
     imgFormat = 'png'
 # Classes
     clFont = 'Arial'

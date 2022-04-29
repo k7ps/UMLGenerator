@@ -1,6 +1,3 @@
-import settings as s
-
-
 class ClassInteraction:
     def __init__(self, parents, compositions, aggregations, clusters):
         self.__parents = parents

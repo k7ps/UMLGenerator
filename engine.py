@@ -1,12 +1,12 @@
-import file as f
-import object_class as o
+from file import *
+from object_class import *
 
 class Engine:
     def __init__(self, paths=['test_code.py']):
         self.__paths = paths
         self.__files = []
         for path in self.__paths:
-            self.__files.append(f.PyLocFile(path))
+            self.__files.append(PyLocFile(path))
 
     def Read(self):
         for file in self.__files:
@@ -21,12 +21,12 @@ class Engine:
         return classes
 
     def __example(self):
-        classes = [o.ObjectClass('Animal',['point','health','name','Heal()','Upgrade()'],o.ClassInteraction([],{},{},[])),
-                   o.ObjectClass('Weapon',['type','damage','Hit()'], o.ClassInteraction([],{},{},['Gun']) ),
-                   o.ObjectClass('Shotgun',['bullet','clip','Shoot()','Reload()'], o.ClassInteraction(['Weapon'],{},{},['Types','Gun']) ),
-                   o.ObjectClass('Cat',['weapon','voice','Meow()','Kill()'],o.ClassInteraction(['Animal'],{'weapon':'Weapon'},{},[])),
-                   o.ObjectClass('Dog',[],o.ClassInteraction(['Animal'],{},{},[])),
-                   o.ObjectClass('Bird',[],o.ClassInteraction(['Animal'],{},{},[])),
-                   o.ObjectClass('Dogocat',[],o.ClassInteraction(['Cat','Dog'],{},{},[])),
-                   o.ObjectClass('Pigeon',['pet'],o.ClassInteraction(['Bird'],{},{'pet':'Dog'},[]))]
+        classes = [ObjectClass('Animal',['point','health','name','Heal()','Upgrade()'],ClassInteraction([],{},{},[])),
+                   ObjectClass('Weapon',['type','damage','Hit()'],ClassInteraction([],{},{},['Gun']) ),
+                   ObjectClass('Shotgun',['bullet','clip','Shoot()','Reload()'],ClassInteraction(['Weapon'],{},{},['Types','Gun']) ),
+                   ObjectClass('Cat',['weapon','voice','Meow()','Kill()'],ClassInteraction(['Animal'],{'weapon':'Weapon'},{},[])),
+                   ObjectClass('Dog',[],ClassInteraction(['Animal'],{},{},[])),
+                   ObjectClass('Bird',[],ClassInteraction(['Animal'],{},{},[])),
+                   ObjectClass('Dogocat',[],ClassInteraction(['Cat','Dog'],{},{},[])),
+                   ObjectClass('Pigeon',['pet'],ClassInteraction(['Bird'],{},{'pet':'Dog'},[]))]
         return classes

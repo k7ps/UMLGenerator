@@ -1,4 +1,4 @@
-import object_class as o
+from object_class import *
 
 
 class Parser:
@@ -120,7 +120,7 @@ class PyParser(Parser):
                                 aggregations[aggregation] = var_name
                     else:
                         fields = list(set(fields))
-                        class_list.append(o.ObjectClass(name, fields, o.ClassInteraction(parents, compositions, aggregations, clusters)))
+                        class_list.append(ObjectClass(name, fields, ClassInteraction(parents, compositions, aggregations, clusters)))
                         break
         return class_list
 

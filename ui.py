@@ -1,16 +1,17 @@
-import settings as s
-import object_class as o
-import drawer as dr
+from settings import *
+from object_class import *
+from drawer import *
+
 import graphviz as gv
 import os
 
 class UI:
     def __init__(self):
         self.__classes = []
-        self.__drawer = dr.HtmlClDrawer()
+        self.__drawer = HtmlClDrawer()
         self.__fileName = 'uml'
-        self.__uml = gv.Digraph(self.__fileName, format=s.Set.imgFormat)
-        self.__uml.attr(fontname=s.Set.clustFont)
+        self.__uml = gv.Digraph (self.__fileName, format=Set.imgFormat)
+        self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}
 
     def SetClasses(self, classes):
@@ -39,24 +40,24 @@ class UI:
             self.__DrawClass (className, fields, compositions, aggregations, graph)
         else:
             with graph.subgraph (name=f'cluster{clusters[ind]}') as subgr:
-                subgr.attr(label=clusters[ind], style=s.Set.clustStyle, color=s.Set.clustCol)
+                subgr.attr(label=clusters[ind], style=Set.clustStyle, color=Set.clustCol)
                 self.__DrawClassInClust (className, fields, compositions, aggregations, clusters, subgr, ind+1)
 
     def __DrawClass(self, className, fields, compositions, aggregations, graph):
         graph.node(className, self.__drawer.Draw(className, fields, compositions, aggregations), 
-                    shape='plaintext', fontname=s.Set.clFont)
+                    shape='plaintext', fontname=Set.clFont)
 
     def __DrawInheritances(self, className, parents):
         for parent in parents:
-            self.__uml.edge(parent, className, arrowhead=s.Set.inherStyle, color=s.Set.arrowCol)
+            self.__uml.edge(parent, className, arrowhead=Set.inherStyle, color=Set.arrowCol)
 
     def __DrawCompositions(self, className, compositions):
         for var in compositions:
-            self.__uml.edge(compositions[var], f'{className}:{var}', arrowhead=s.Set.compStyle, color=s.Set.arrowCol)
+            self.__uml.edge(compositions[var], f'{className}:{var}', arrowhead=Set.compStyle, color=Set.arrowCol)
 
     def __DrawAggregations(self, className, aggregations):
         for var in aggregations:
-            self.__uml.edge(aggregations[var], f'{className}:{var}', arrowhead=s.Set.aggrStyle, color=s.Set.arrowCol)
+            self.__uml.edge(aggregations[var], f'{className}:{var}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
 
     def __CountClustersSize(self, classes):
         for cl in classes:
