@@ -6,7 +6,7 @@ class Engine:
     def __init__(self, paths=['main.py','controller.py','engine.py','ui.py','drawer.py','file.py','formator.py',
                 'object_class.py', 'reader.py', 'settings.py','parser.py']):
         self.__paths = paths
-        self.__files = []
+        self.__files: File = []
         for path in self.__paths:
             self.__files.append(PyLocFile(path))
 

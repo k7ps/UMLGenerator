@@ -20,7 +20,7 @@ class Set:
     arrowCol = 'black'
 # Clusters
     clustStyle = 'dashed,rounded'
-    clustCol = 'grey'
+    clustCol = 'black'
     clustFont = 'Times-Roman'
     
      

@@ -1,11 +1,13 @@
 from settings import *
 
 
+#@UML clusters Drawing
 class ClDrawer:
     def Draw(self, className, fields, compositions):
         pass
 
 
+#@UML clusters Drawing
 class HtmlClDrawer(ClDrawer):
     def __init__(self):
         self.__roundTable = f'<<table border="{Set.clBorder}" style="{Set.clStyle}">'

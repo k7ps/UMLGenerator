@@ -1,3 +1,4 @@
+#@UML clusters Reading
 class Reader:
     def __init__(self, path, enc='utf-8'):
         self._path = path
@@ -7,6 +8,7 @@ class Reader:
         pass
 
 
+#@UML clusters Reading
 class LocReader(Reader):
     def __init__(self, path, enc='utf-8'):
         super().__init__(path, enc=enc)

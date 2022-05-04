@@ -5,8 +5,8 @@ from ui import *
 
 class Controller:
     def __init__(self):
-        self.__engine = Engine() 
-        self.__ui = UI()
+        self.__engine: Engine = Engine() 
+        self.__ui: UI = UI()
 
     def Start(self):
         Set.SetStandartTheme()

@@ -5,10 +5,11 @@ from drawer import *
 import graphviz as gv
 import os
 
+#@UML clusters Drawing
 class UI:
     def __init__(self):
         self.__classes = []
-        self.__drawer = HtmlClDrawer()
+        self.__drawer: ClDrawer = HtmlClDrawer()
         self.__fileName = 'uml'
         self.__uml = gv.Digraph (self.__fileName, format=Set.imgFormat)
         self.__uml.attr (fontname=Set.clustFont)
@@ -27,7 +28,7 @@ class UI:
             self.__DrawCompositions (cl.GetName(), cl.GetCompositions())
             self.__DrawAggregations (cl.GetName(), cl.GetAggregations())
 
-        self.__uml = self.__uml.unflatten(stagger=1)
+        #self.__uml = self.__uml.unflatten(stagger=1)
         self.__uml.render (self.__fileName, view=True) 
         self.__RemoveFile (self.__fileName)
         

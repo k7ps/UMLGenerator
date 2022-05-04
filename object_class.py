@@ -27,7 +27,7 @@ class ObjectClass:
         self.__name = name
         self.__fields = fields
         self.__fields.sort()
-        self.__interactions = interactions
+        self.__interactions: ClassInteraction = interactions
 
     def Get(self):
         return (self.__name, self.__fields)

@@ -3,11 +3,13 @@ from formator import *
 from settings import *
 
 
+#@UML clusters Parsing
 class Parser:
     def Parse(self, readed_code):
         pass
 
 
+#@UML clusters Parsing
 class PyParser(Parser):           
     def __init__(self):
         self.__initDef = "__init__"

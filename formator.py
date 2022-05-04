@@ -1,7 +1,7 @@
 from settings import *
 #from reader import *
 
-
+#@UML clusters Parsing
 class Formator:
     _comSign = ''
     _umlSign = ''
@@ -10,6 +10,7 @@ class Formator:
         pass
 
 
+#@UML clusters Parsing
 class PyFormator(Formator):
     _comSign = '#'
     _umlSign = Set.pyUmlSign

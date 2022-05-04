@@ -5,7 +5,7 @@ from reader import *
 class File:
     def __init__(self):
         self._lastChangeDate = self.GetChangeDate()
-        self._classes = []
+        self._classes: ObjectClass = []
 
     def GetChangeDate(self):
         return 2
