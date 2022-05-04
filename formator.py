@@ -1,28 +1,41 @@
 from settings import *
+#from reader import *
 
 
 class Formator:
+    _comSign = ''
+    _umlSign = ''
+
     def FormatCode(code):
         pass
 
 
 class PyFormator(Formator):
-    __comSign = '#'
+    _comSign = '#'
+    _umlSign = Set.pyUmlSign
 
     def FormatCode(code):
         formatted_code = code[:]
         PyFormator.__DeleteComments (formatted_code)
+        PyFormator.__DeleteEmptyLines (formatted_code)
         PyFormator.__CombineSepLines (formatted_code)
-        PyFormator.__RemoveNeedless (formatted_code)
         return formatted_code
 
     def __DeleteComments(code):
         for i in range(len(code)):
-            com = code[i].find(PyFormator.__comSign)
-            if com != -1 and com != code[i].find(Set.umlSign):
+            com = code[i].find(PyFormator._comSign)
+            if com != -1 and com != code[i].find(PyFormator._umlSign):
                 code[i] = code[i][:com]
             elif len(code[i]) > 0 and code[i][-1:] == '\n':
                 code[i] = code[i][:-1]
+
+    def __DeleteEmptyLines(code):
+        i = 0
+        while i < len(code):
+            if code[i].isspace() or len(code[i])==0:
+                code.pop(i)
+            else:
+                i += 1
 
     def __CombineSepLines(code):
         stack = []
@@ -36,13 +49,17 @@ class PyFormator(Formator):
                     stack.append((code[i][j],i))
                 elif len(code[i])-j>=3 and code[i][j:j+3] in opnBrkt and (len(stack)==0 or code[i][j:j+3] != stack[-1][0]):
                     stack.append((code[i][j:j+3],i))
-                else:
-                    if len(stack)>0:
-                        if code[i][j] == clsBrkt[stack[-1][0]]:
-                            toInd = stack.pop()[1]
-                        elif len(code[i])-j>=3 and code[i][j:j+3] == clsBrkt[stack[-1][0]]:
-                            toInd = stack.pop()[1]
+                elif len(stack)>0:
+                    if code[i][j] == clsBrkt[stack[-1][0]]:
+                        toInd = stack.pop()[1]
+                    elif len(code[i])-j>=3 and code[i][j:j+3] == clsBrkt[stack[-1][0]]:
+                        toInd = stack.pop()[1]
             while i != toInd:
                 code[i-1] += code.pop(i)
                 i -= 1
             i += 1
+
+
+#r = LocReader('testclass.py')
+#code = r.ReadFrom()
+#print(*PyFormator.FormatCode(code), sep='\n')

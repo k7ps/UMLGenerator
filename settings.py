@@ -1,5 +1,6 @@
 class Set: 
     pyUmlSign = '#@UML'
+    pyAggrSign = 'aggregation'
     imgFormat = 'png'
 # Classes
     clFont = 'Arial'

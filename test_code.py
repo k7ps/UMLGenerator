@@ -39,10 +39,9 @@ class Dog(Animal):
 class Bird(Animal):
     pass
 
-#!UML
 class Pigeon(Bird):
     def __init__(self, d: Dog):
-        self.pet: Dog = d
+        self.pet: Dog = d #@UML aggr
 
 class Dogocat(Cat, Dog):
     pass
