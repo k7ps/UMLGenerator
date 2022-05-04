@@ -16,8 +16,6 @@ class UI:
 
     def SetClasses(self, classes):
         self.__classes = classes
-        #for c in classes:
-        #   c.Print()
 
     def DrawUML(self):
         self.__CountClustersSize(self.__classes)
@@ -48,17 +46,30 @@ class UI:
         graph.node(className, self.__drawer.Draw(className, fields, compositions, aggregations), 
                     shape='plaintext', fontname=Set.clFont)
 
+    def __IsClassDrawn(self, className):
+        for cl in self.__classes:
+            if cl.GetName() == className:
+                return True
+        return False
+
+    def __DrawMissingClass(self, className):
+        if not self.__IsClassDrawn (className):
+            self.__DrawClass(className, [], {}, {}, self.__uml)
+
     def __DrawInheritances(self, className, parents):
         for parent in parents:
             self.__uml.edge(parent, className, arrowhead=Set.inherStyle, color=Set.arrowCol)
+            self.__DrawMissingClass(parent)
 
     def __DrawCompositions(self, className, compositions):
         for var in compositions:
             self.__uml.edge(compositions[var], f'{className}:{var}', arrowhead=Set.compStyle, color=Set.arrowCol)
+            self.__DrawMissingClass(compositions[var])
 
     def __DrawAggregations(self, className, aggregations):
         for var in aggregations:
             self.__uml.edge(aggregations[var], f'{className}:{var}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
+            self.__DrawMissingClass(aggregations[var])
 
     def __CountClustersSize(self, classes):
         for cl in classes:

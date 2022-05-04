@@ -1,7 +1,7 @@
 class Animal:
     _a = 10
     def __init__(self):
-        self.point = 1
+        self.point = 1 
         self.health = 1
         self.name = ""
     def Heal(self):

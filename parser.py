@@ -1,7 +1,6 @@
 from object_class import *
 from formator import *
 from settings import *
-#from reader import *
 
 
 class Parser:
@@ -99,8 +98,30 @@ class PyParser(Parser):
         self.__DeleteSpaces(clusters)
         return clusters.split(sep=',')
 
-    def __IsVar(self, line):
-        return (line[0].isalpha() or line[0]=='_') and line.find('=') != -1
+    def __IsLetterName(self, c):
+        return self.__IsFirstLetter(c) or c.isdigit()
+
+    def __IsFirstLetter(self, c):
+        return c.isalpha() or c == '_'
+
+    def __IsVar(self, line, inInit=False):
+        if line.find('=') == -1:
+            return False
+
+        if inInit:
+            line = self.__DeleteSpaces(line)
+            if not line.startswith(self.__varDef):
+                return False
+            line = line[len(self.__varDef):]
+        else:
+            if not self.__IsFirstLetter(line[0]):
+                return False
+            line = self.__DeleteSpaces(line)
+
+        for i, c in enumerate(line):
+            if not self.__IsLetterName(c):
+                return c == '=' or c == ':'
+        return False
 
     def __IsMethod(self, line):
         return line.startswith (self.__funcDef)
@@ -116,22 +137,22 @@ class PyParser(Parser):
             parents = []
         return name.split(sep=':')[0], parents
 
-    def __ReadVariable(self, start_str):
-        var_str = self.__DeleteSpaces(start_str)
-        if var_str.startswith(self.__varDef):
-            var_str = var_str[len(self.__varDef):]
+    def __ReadVariable(self, line):
+        varStr = self.__DeleteSpaces(line)
+        if varStr.startswith(self.__varDef):
+            varStr = varStr[len(self.__varDef):]
         name = ''
         type = ''
-        for i in range(len(var_str)):
-            if var_str[i] in [':','=','+','/','-','*','%']:
-                if var_str[i] == ':':
-                    type = var_str[i+1:].split(sep='=')[0]
+        for i, c in enumerate(varStr):
+            if not self.__IsLetterName(c):
+                if c == ':':
+                    type = varStr[i+1:].split(sep='=')[0]
                 break
-            name += var_str[i]
+            name += c
         type = type.split(sep='.')[-1]
-        umlIndicatorInd = var_str.find(self.__indicator)
+        umlIndicatorInd = varStr.find(self.__indicator)
         if umlIndicatorInd != -1:
-            end = var_str[umlIndicatorInd + len(self.__indicator):].lower()
+            end = varStr[umlIndicatorInd + len(self.__indicator):].lower()
             if self.__aggrIndicator.startswith(end):
                 return name, '', type
             return name, type, ''
@@ -147,9 +168,9 @@ class PyParser(Parser):
         comps = {}
         aggrs = {}
         while ind < len(code) and code[ind].startswith(' '*2*tab):
-            var_str = self.__DeleteSpaces(code[ind])
-            if var_str.startswith(self.__varDef):
-                varName, comp, aggr = self.__ReadVariable(code[ind])
+            varStr = self.__DeleteSpaces(code[ind])
+            if self.__IsVar(varStr, inInit=True):
+                varName, comp, aggr = self.__ReadVariable(varStr)
                 vars.append(varName)
                 if comp != '':
                     comps[varName] = comp
@@ -162,27 +183,3 @@ class PyParser(Parser):
         method_str = self.__DeleteSpaces(start_str)
         method_str = method_str[len(self.__funcDef)-1:]
         return method_str.split(sep='(')[0]+'()'
-
-
-
-#r = LocReader('testclass.py')
-#code = r.ReadFrom()
-#b = PyParser()
-#c = b.Parse(code)
-# print(c)
-#b = PyParser()
-# c = b._PyParser__ReadName("class Parser(Parser,Ashdhkasdjkasdjkasd,OK):")
-#c = b._PyParser__ReadVariable("        self.a:B = a  #!UML A")
-# c = b._PyParser__ReadMethod('  def aefaf(ok = "__init__"):')
-# c = b._PyParser__ReadInit([' def __init__(a,b,c,d=","):'],0)
-# print(c)
-
-
-
-
-# for i in range(len(a)):
-#     b,c = GetCompositions(a[i])
-#     print(b, '-----', c)
-
-# def __init__ (a: int):
-#     self.b: int = a # !aggregation
