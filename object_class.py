@@ -26,6 +26,7 @@ class ObjectClass:
     def __init__(self, name, fields, interactions):
         self.__name = name
         self.__fields = fields
+        self.__fields.sort()
         self.__interactions = interactions
 
     def Get(self):

@@ -2,7 +2,9 @@ from file import *
 from object_class import *
 
 class Engine:
-    def __init__(self, paths=['test_code.py']):
+    #def __init__(self, paths=['test_code.py']):
+    def __init__(self, paths=['main.py','controller.py','engine.py','ui.py','drawer.py','file.py','formator.py',
+                'object_class.py', 'reader.py', 'settings.py','parser.py']):
         self.__paths = paths
         self.__files = []
         for path in self.__paths:
@@ -16,8 +18,7 @@ class Engine:
         #return self.__example()
         classes = []
         for file in self.__files:
-            for cl in file.GetClasses():
-                classes.append(cl)
+            classes += file.GetClasses()
         return classes
 
     def __example(self):

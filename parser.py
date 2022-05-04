@@ -16,6 +16,7 @@ class PyParser(Parser):
         self.__classDef = "class "
         self.__indicator = Set.pyUmlSign 
         self.__aggrIndicator = Set.pyAggrSign
+        self.__clustIndicator = Set.pyClustSign
         self.__varDef = "self."
         self.__standardTab = 4
 
@@ -61,6 +62,8 @@ class PyParser(Parser):
         name, parents = self.__ReadClassName (code[start])
         fields, clusters = [], []
         compositions, aggregations = {}, {}
+        if start > 0:
+            clusters = self.__ReadClusters(code[start-1])
         for i in range(start+1, len(code)):
             line = code[i]
             if line.startswith (tabSpace):
@@ -86,8 +89,18 @@ class PyParser(Parser):
         fields = list(set(fields))
         return ObjectClass(name, fields, ClassInteraction(parents, compositions, aggregations, clusters))
 
+    def __ReadClusters(self, line):
+        clustList = line.split(sep=' ')
+        if len(clustList) < 3 or clustList[0] != self.__indicator or clustList[1] != self.__clustIndicator:
+            return []
+        clusters = ''.join(clustList[2:])
+        if clusters.find(',') == -1:
+            return clusters.split(sep=' ')
+        self.__DeleteSpaces(clusters)
+        return clusters.split(sep=',')
+
     def __IsVar(self, line):
-        return line[0].isalpha() and line.find('=') != -1
+        return (line[0].isalpha() or line[0]=='_') and line.find('=') != -1
 
     def __IsMethod(self, line):
         return line.startswith (self.__funcDef)

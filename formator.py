@@ -23,8 +23,12 @@ class PyFormator(Formator):
 
     def __DeleteComments(code):
         for i in range(len(code)):
-            com = code[i].find(PyFormator._comSign)
-            if com != -1 and com != code[i].find(PyFormator._umlSign):
+            com = -1
+            for j in range(len(code[i])):
+                if code[i].startswith(PyFormator._comSign, j) and not code[i].startswith(PyFormator._umlSign, j):
+                    com = j
+                    break
+            if com != -1:
                 code[i] = code[i][:com]
             elif len(code[i]) > 0 and code[i][-1:] == '\n':
                 code[i] = code[i][:-1]

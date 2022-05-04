@@ -29,6 +29,7 @@ class UI:
             self.__DrawCompositions (cl.GetName(), cl.GetCompositions())
             self.__DrawAggregations (cl.GetName(), cl.GetAggregations())
 
+        self.__uml = self.__uml.unflatten(stagger=1)
         self.__uml.render (self.__fileName, view=True) 
         self.__RemoveFile (self.__fileName)
         

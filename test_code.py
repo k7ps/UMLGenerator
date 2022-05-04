@@ -1,4 +1,5 @@
 class Animal:
+    _a = 10
     def __init__(self):
         self.point = 1
         self.health = 1
@@ -8,6 +9,7 @@ class Animal:
     def Upgrade(self):
         self.point += 1
 
+#@UML clusters Gun
 class Weapon:
     def __init__(self):
         self.type = None
@@ -15,6 +17,7 @@ class Weapon:
     def Hit(self, animal):
         animal.health -= damage
         
+#@UML clusters Gun, Type
 class Shotgun(Weapon):
     def __init__(self):
         self.bullet = 10
@@ -32,7 +35,7 @@ class Cat(Animal):
         print(self.voice)
     def Kill(self):
         self.weapon.Shoot()
-
+        
 class Dog(Animal):
     pass
 
@@ -45,9 +48,3 @@ class Pigeon(Bird):
 
 class Dogocat(Cat, Dog):
     pass
-   
-   
-class B:
-    pass
-    
-    
