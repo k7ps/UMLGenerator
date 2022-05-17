@@ -1,9 +1,10 @@
+import graphviz as gv
+import os
+
 from settings import *
 from object_class import *
 from drawer import *
 
-import graphviz as gv
-import os
 
 #@UML clusters Drawing
 class UI:
@@ -17,6 +18,8 @@ class UI:
 
     def SetClasses(self, classes):
         self.__classes = classes
+        #for cl in classes:
+        #    cl.Print()
 
     def DrawUML(self):
         self.__CountClustersSize(self.__classes)
@@ -59,7 +62,7 @@ class UI:
 
     def __DrawInheritances(self, className, parents):
         for parent in parents:
-            self.__uml.edge(parent, className, arrowhead=Set.inherStyle, color=Set.arrowCol)
+            self.__uml.edge(className, parent, arrowhead=Set.inherStyle, color=Set.arrowCol)
             self.__DrawMissingClass(parent)
 
     def __DrawCompositions(self, className, compositions):
@@ -97,6 +100,6 @@ class UI:
         return True
 
     def __RemoveFile(self, fileName):
-        path = os.path.join(os.path.abspath(os.path.dirname(__file__)), fileName)
+        path = os.path.join(os.path.abspath(fileName))
         os.remove(path)
 

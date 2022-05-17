@@ -2,6 +2,8 @@ from object_class import *
 from formator import *
 from settings import *
 
+from reader import * 
+
 
 #@UML clusters Parsing
 class Parser:
@@ -71,20 +73,20 @@ class PyParser(Parser):
                 line = line[tab:]
                 if self.__IsMethod(line):
                     if self.__IsInit (line):
-                        initName, vars, comps, aggrs = self.__ReadInit(code, i+1, tab)
-                        fields.append(initName)
-                        fields += vars
+                        init, varbls, comps, aggrs = self.__ReadInit(code, i+1, tab)
+                        fields.append (init)
+                        fields += varbls
                         compositions.update(comps)
                         aggregations.update(aggrs)
                     else:
-                        fields.append(self.__ReadMethod(line))
+                        fields.append (self.__ReadMethod(line))
                 elif self.__IsVar(line):
-                    var_name, composition, aggregation = self.__ReadVariable(line)
-                    fields.append(var_name)
+                    var, composition, aggregation = self.__ReadVariable(line)
+                    fields.append (var)
                     if composition != '':
-                        compositions[composition] = var_name
+                        compositions[composition] = var.name
                     if aggregation != '':
-                        aggregations[aggregation] = var_name
+                        aggregations[aggregation] = var.name
             else:
                 break
         fields = list(set(fields))
@@ -156,32 +158,39 @@ class PyParser(Parser):
         if umlIndicatorInd != -1:
             end = varStr[umlIndicatorInd + len(self.__indicator):].lower()
             if self.__aggrIndicator.startswith(end):
-                return name, '', type
-            return name, type, ''
-        return name, type, ''
+                return Variable(name), '', type
+        return Variable(name), type, ''
             
     def __IsInit(self, start_str):
         init_str = self.__DeleteSpaces(start_str)[len(self.__funcDef)-1:]
         return init_str.startswith(self.__initDef)
 
     def __ReadInit(self, code, ind, tab):
-        name = self.__initDef+'()'
+        init = self.__initDef+'()'
         vars = []
         comps = {}
         aggrs = {}
         while ind < len(code) and code[ind].startswith(' '*2*tab):
             varStr = self.__DeleteSpaces(code[ind])
             if self.__IsVar(varStr, inInit=True):
-                varName, comp, aggr = self.__ReadVariable(varStr)
-                vars.append(varName)
+                var, comp, aggr = self.__ReadVariable(varStr)
+                vars.append(var)
                 if comp != '':
-                    comps[varName] = comp
+                    comps[var.name] = comp
                 if aggr != '':
-                    aggrs[varName] = aggr
+                    aggrs[var.name] = aggr
             ind+=1
-        return name, vars, comps, aggrs
+        return Method(init), vars, comps, aggrs
 
     def __ReadMethod(self, start_str):
         method_str = self.__DeleteSpaces(start_str)
         method_str = method_str[len(self.__funcDef)-1:]
-        return method_str.split(sep='(')[0]+'()'
+        return Method( method_str.split(sep='(')[0]+'()' )
+
+
+#p = PyParser()
+#l = LocReader('test_code.py')
+#code = l.ReadFrom()
+#pcode = p.Parse(code)
+#for cl in pcode:
+#    cl.Print()

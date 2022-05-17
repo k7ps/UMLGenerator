@@ -1,4 +1,5 @@
 from settings import *
+from object_class import *
 
 
 #@UML clusters Drawing
@@ -25,18 +26,17 @@ class HtmlClDrawer(ClDrawer):
     def __DrawClassName(self, name):
         return self.__AddCell(name, align="center", bgcolor=Set.nameCol, style="rounded", height=Set.nameHeight)
 
-    def __IsMethod(self, method):
-        return len(method)>2 and method[-2:] == '()'
-
     def __DrawFields(self, fields, compositions, aggregations):
         strVars = ''
         strMethods = ''
 
         for field in fields:
-            if self.__IsMethod(field):
-                strMethods += self.__DrawMethod(field, len(strMethods)==0)
+            if field.modifier != AccessMod.PUBLIC and compositions.get(field.name) == None:
+                continue
+            if field.IsMethod():
+                strMethods += self.__DrawMethod(field.name, len(strMethods)==0)
             else:
-                strVars += self.__DrawVar(field, compositions, aggregations)
+                strVars += self.__DrawVar(field.name, compositions, aggregations)
 
         if not strVars:
             strVars += self.__AddEmptyCell()

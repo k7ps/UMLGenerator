@@ -2,7 +2,7 @@ from file import *
 from object_class import *
 
 class Engine:
-    #def __init__(self, paths=['test_code.py']):
+    #def __init__(self, paths=['easymain.py']):
     def __init__(self, paths=['main.py','controller.py','engine.py','ui.py','drawer.py','file.py','formator.py',
                 'object_class.py', 'reader.py', 'settings.py','parser.py']):
         self.__paths = paths
