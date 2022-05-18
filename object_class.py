@@ -1,5 +1,7 @@
 from enum import Enum
 
+from settings import *
+
 class ClassInteraction:
     def __init__(self, parents, clusters):
         self.__parents = parents
@@ -36,7 +38,7 @@ class Drawable:
     def IsIgnore(self, ignored):
         self.__IsIgnore = ignored
 
-#@UML ignore
+
 class AccessMod(Enum):
     PUBLIC = 0
     PROTECTED = 1
@@ -51,8 +53,18 @@ class Field(Drawable):
         self.__modifier: AccessMod = AccessMod.PUBLIC
         if name.startswith('__'):
             self.__modifier = AccessMod.PRIVATE
+            if Set.ignorePrivate:
+                if self.IsVariable() and self.HaveType():
+                    self.IsIgnore = Set.ignorePrivateComps
+                else:
+                    self.IsIgnore = True
         elif name.startswith('_'):
             self.__modifier = AccessMod.PROTECTED
+            if Set.ignoreProtected:
+                if self.IsVariable() and self.HaveType():
+                    self.IsIgnore = Set.ignoreProtectedComps
+                else:
+                    self.IsIgnore = True
 
     @property
     def modifier(self):
@@ -85,9 +97,9 @@ class Field(Drawable):
 
 class Variable(Field):
     def __init__(self, name, varType='', isAggr = False, ignored=False):
-        super().__init__(name, ignored)
         self.__type = varType
         self.__isAggr = isAggr
+        super().__init__(name, ignored)
     
     @property
     def isAggr(self):

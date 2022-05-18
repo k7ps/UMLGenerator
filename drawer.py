@@ -24,7 +24,7 @@ class HtmlClDrawer(ClDrawer):
 
 
     def __DrawClassName(self, name):
-        return self.__AddCell(name, align="center", bgcolor=Set.nameCol, style="rounded", height=Set.nameHeight)
+        return self.__AddCell(name, align="center", bgcolor=Set.classCol, style="rounded", height=Set.nameHeight)
 
     def __DrawFields(self, fields):
         strVars = ''
@@ -33,10 +33,6 @@ class HtmlClDrawer(ClDrawer):
         for field in fields:
             if field.IsIgnore:
                 continue
-            if field.modifier != AccessMod.PUBLIC and ((field.IsVariable() and not field.HaveType()) or field.IsMethod()):
-                continue
-            #if field.modifier != AccessMod.PUBLIC and field.IsVariable() and not field.HaveType():
-            #    continue
             if field.IsMethod():
                 strMethods += self.__DrawMethod(field.name, len(strMethods)==0)
             else:

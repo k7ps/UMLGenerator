@@ -4,12 +4,22 @@ class Set:
     clustSign = 'clusters'
     ignoreSign = 'ignore' 
     imgFormat = 'png'
+
+# User settings
+    ignorePrivate = True
+    ignoreProtected = True
+    ignorePrivateComps = False
+    ignoreProtectedComps = False
+    readOnlyThisDirFiles = True
+    classCol = 'yellow'
+    #TODO
+    ignoreParentsFields = False
+
 # Classes
     clFont = 'Arial'
     clFontSize = 14
     clStyle = 'rounded' 
     clBorder = 1
-    nameCol = 'yellow'
     nameHeight = 25
     emptyCellHeight = 5
     emptyBoundCellHeight = 10
