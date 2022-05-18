@@ -5,18 +5,10 @@ from settings import *
 class ClassInteraction:
     def __init__(self, parents, clusters):
         self.__parents = parents
-        #self.__compositions = compositions
-        #self.__aggregations = aggregations
         self.__clusters = clusters
 
     def GetParents(self):
         return self.__parents
-
-    #def GetCompositions(self):
-    #    return self.__compositions
-
-    #def GetAggregations(self):
-    #    return self.__aggregations
 
     def GetClusters(self):
         return self.__clusters
@@ -123,8 +115,6 @@ class ObjectClass(Drawable):
         super().__init__(ignored)
         self.__name = name
         self.__fields: list[Field] = fields
-
-        #self.__fields.sort()
         self.__interactions: ClassInteraction = interactions
 
     def Get(self):
@@ -143,12 +133,6 @@ class ObjectClass(Drawable):
     def GetParents(self):
         return self.__interactions.GetParents()
 
-    #def GetCompositions(self):
-    #    return self.__interactions.GetCompositions()
-
-    #def GetAggregations(self):
-    #    return self.__interactions.GetAggregations()
-
     def GetClusters(self):
         return self.__interactions.GetClusters()
     
@@ -159,6 +143,4 @@ class ObjectClass(Drawable):
         print('>', self.__name, "Ignore=", self.IsIgnore)
         print('\tFields:',[i.name for i in self.__fields])
         print('\tParents:', *self.GetParents(), sep='  ')
-        #print('\tCompositions:', self.GetCompositions(), sep='  ')
-        #print('\tAggregations:', self.GetAggregations(), sep='  ')
         print('\tClusters:', *self.GetClusters(), sep='  ')

@@ -4,9 +4,6 @@ from settings import *
 from userset import *
 from ui import *
 
-#paths = ['main.py','controller.py','engine.py','ui.py','drawer.py','file.py','formator.py',
-#         'object_class.py', 'reader.py', 'settings.py','parser.py', 'modchecker.py', 'userset.py']
-#paths = ['test_code2.py']
 
 class Controller:
     def __init__(self):
@@ -49,8 +46,3 @@ class Controller:
         self.__engine.Read()
         self.__ui.SetClasses( self.__engine.GetClasses() )
         self.__ui.DrawUML()
-
-
-#c = Controller()
-#p = c._Controller__GetPaths()
-#print(*p,sep='\n')

@@ -17,9 +17,3 @@ class PyLocFile(File, LocReader, PyParser):
 
     def Read(self):
         self._classes = self.Parse(self.ReadFrom())
-
-    
-
-
-        
-    

@@ -3,8 +3,6 @@ from formator import *
 from settings import *
 from modchecker import *
 
-from reader import * 
-
 
 #@UML clusters Parsing
 class Parser:
@@ -64,7 +62,6 @@ class PyParser(Parser):
         name, parents = self.__ReadClassName (code[start])
         fields, clusters = [], []
         ignored = False
-        #compositions, aggregations = {}, {}
         if start > 0:
             clusters, ignored = ModificationChecker.ReadClass(code[start-1])
         for i in range(start+1, len(code)):
@@ -76,34 +73,15 @@ class PyParser(Parser):
                         init, varbls = self.__ReadInit(code, i+1, tab)
                         fields.append (init)
                         fields += varbls
-                        #compositions.update(comps)
-                        #aggregations.update(aggrs)
                     else:
                         fields.append (self.__ReadMethod(line))
                 elif self.__IsVar(line):
                     var = self.__ReadVariable(line)
                     fields.append (var)
-                    #if composition != '':
-                    #    compositions[composition] = var.name
-                    #if aggregation != '':
-                    #    aggregations[aggregation] = var.name
             else:
                 break
-        #for field in fields:
-        #    print(field.name, sep=' ')
-        #print
         fields = list(set(fields))
         return ObjectClass(name, fields, ClassInteraction(parents, clusters), ignored)
-
-    #def __ReadClusters(self, line):
-    #    clustList = line.split(sep=' ')
-    #    if len(clustList) < 3 or clustList[0] != self.__indicator or clustList[1] != self.__clustIndicator:
-    #        return []
-    #    clusters = ''.join(clustList[2:])
-    #    if clusters.find(',') == -1:
-    #        return clusters.split(sep=' ')
-    #    self.__DeleteSpaces(clusters)
-    #    return clusters.split(sep=',')
 
     def __IsLetterName(self, c):
         return self.__IsFirstLetter(c) or c.isdigit()
@@ -168,7 +146,6 @@ class PyParser(Parser):
                 break
             name += c
         varType = self.__ReadType(varType)
-        #print(name, varType, isAggr, ignore)
         return Variable(name, varType, isAggr, ignore)
             
     def __IsInit(self, start_str):
@@ -190,13 +167,3 @@ class PyParser(Parser):
         method_str = self.__DeleteSpaces (startStr)
         method_str = method_str[len(self.__funcDef)-1:]
         return Method( method_str.split(sep='(')[0]+'()', ignore )
-
-
-#p = PyParser()
-#l = LocReader('test_code.py')
-#code = l.ReadFrom()
-#c = p._PyParser__ReadVariable('     self.__asd:  list[obj.ok] = asda sda sd #@UML aggr; ignore')
-#c = p._PyParser__ReadMethod(' def    okokok(asd a,ads, asd asd):  #@UML aggr; ignore')
-#pcode = p.Parse(code)
-#for cl in pcode:
-   # cl.Print()

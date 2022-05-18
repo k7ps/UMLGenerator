@@ -1,5 +1,4 @@
 from settings import *
-#from reader import *
 
 #@UML clusters Parsing
 class Formator:
@@ -63,8 +62,3 @@ class PyFormator(Formator):
                 code[i-1] += code.pop(i)
                 i -= 1
             i += 1
-
-
-#r = LocReader('testclass.py')
-#code = r.ReadFrom()
-#print(*PyFormator.FormatCode(code), sep='\n')

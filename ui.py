@@ -19,8 +19,6 @@ class UI:
 
     def SetClasses(self, classes):
         self.__classes = classes
-        #for cl in classes:
-        #    cl.Print()
 
     def DrawUML(self):
         self.__CountClustersSize(self.__classes)
@@ -33,9 +31,7 @@ class UI:
             self.__DrawInheritances (cl.GetName(), cl.GetParents())
             self.__DrawCompositions (cl.GetName(), cl.GetVars())
 
-        #self.__uml = self.__uml.unflatten(stagger=1)
         self.__uml.render (self.__fileName, view=True) 
-        #print(self.__uml)
         self.__RemoveFile (self.__fileName)
         
     def __DrawClassInClust(self, className, fields, clusters, graph=None, ind=0):

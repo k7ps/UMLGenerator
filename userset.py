@@ -22,6 +22,7 @@ class UserSettings:
         self.__readOnlyDir = 'readfilesonlyinthisdir'
         self.__filesSign = 'files'
         self.__ignoreFilesSign = 'ignorefiles'
+        self.__colorSign = 'color'
 
     @property
     def files(self):
@@ -52,6 +53,8 @@ class UserSettings:
             self.__files = value
         if mod == self.__ignoreFilesSign:
             self.__ignoreFiles = value
+        if mod == self.__colorSign:
+            Set.classCol = value
 
     def Read(self):
         if not os.path.exists(self.__fileName):
