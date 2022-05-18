@@ -4,7 +4,7 @@ from object_class import *
 
 #@UML clusters Drawing
 class ClDrawer:
-    def Draw(self, className, fields, compositions):
+    def Draw(self, className, fields):
         pass
 
 
@@ -15,10 +15,10 @@ class HtmlClDrawer(ClDrawer):
         self.__endTable = '</table>>'
 
 
-    def Draw(self, className, fields, compositions, aggregations):
+    def Draw(self, className, fields):
         strDraw = self.__roundTable   
         strDraw += self.__DrawClassName (className)
-        strDraw += self.__DrawFields (fields, compositions, aggregations)
+        strDraw += self.__DrawFields (fields)
         strDraw += self.__endTable
         return strDraw
 
@@ -26,17 +26,21 @@ class HtmlClDrawer(ClDrawer):
     def __DrawClassName(self, name):
         return self.__AddCell(name, align="center", bgcolor=Set.nameCol, style="rounded", height=Set.nameHeight)
 
-    def __DrawFields(self, fields, compositions, aggregations):
+    def __DrawFields(self, fields):
         strVars = ''
         strMethods = ''
 
         for field in fields:
-            if field.modifier != AccessMod.PUBLIC and compositions.get(field.name) == None:
+            if field.IsIgnore:
                 continue
+            if field.modifier != AccessMod.PUBLIC and ((field.IsVariable() and not field.HaveType()) or field.IsMethod()):
+                continue
+            #if field.modifier != AccessMod.PUBLIC and field.IsVariable() and not field.HaveType():
+            #    continue
             if field.IsMethod():
                 strMethods += self.__DrawMethod(field.name, len(strMethods)==0)
             else:
-                strVars += self.__DrawVar(field.name, compositions, aggregations)
+                strVars += self.__DrawVar(field.name, field.HaveType())
 
         if not strVars:
             strVars += self.__AddEmptyCell()
@@ -45,8 +49,8 @@ class HtmlClDrawer(ClDrawer):
 
         return strVars + strMethods
 
-    def __DrawVar(self, var, compositions, aggregations):
-        if compositions.get(var) != None or aggregations.get(var) != None:
+    def __DrawVar(self, var, isComp):
+        if isComp:
             return self.__AddPortCell (var)
         return self.__AddCell (var)
 

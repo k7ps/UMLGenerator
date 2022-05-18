@@ -3,9 +3,13 @@ from engine import *
 from settings import *
 from ui import *
 
+paths = ['main.py','controller.py','engine.py','ui.py','drawer.py','file.py','formator.py',
+         'object_class.py', 'reader.py', 'settings.py','parser.py', 'modchecker.py']
+#paths = ['test_code2.py']
+
 class Controller:
     def __init__(self):
-        self.__engine: Engine = Engine() 
+        self.__engine: Engine = Engine(paths) 
         self.__ui: UI = UI()
 
     def Start(self):

@@ -13,6 +13,7 @@ class UI:
         self.__drawer: ClDrawer = HtmlClDrawer()
         self.__fileName = 'uml'
         self.__uml = gv.Digraph (self.__fileName, format=Set.imgFormat)
+        #self.__uml.attr(splines='ortho')
         self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}
 
@@ -25,30 +26,31 @@ class UI:
         self.__CountClustersSize(self.__classes)
 
         for cl in self.__classes:
+            if cl.IsIgnore:
+                continue
             self.__SortClusters (cl)
-            self.__DrawClassInClust (*cl.Get(), cl.GetCompositions(), cl.GetAggregations(), cl.GetClusters())
+            self.__DrawClassInClust (*cl.Get(), cl.GetClusters())
             self.__DrawInheritances (cl.GetName(), cl.GetParents())
-            self.__DrawCompositions (cl.GetName(), cl.GetCompositions())
-            self.__DrawAggregations (cl.GetName(), cl.GetAggregations())
+            self.__DrawCompositions (cl.GetName(), cl.GetVars())
 
         #self.__uml = self.__uml.unflatten(stagger=1)
         self.__uml.render (self.__fileName, view=True) 
+        #print(self.__uml)
         self.__RemoveFile (self.__fileName)
         
-    def __DrawClassInClust(self, className, fields, compositions, aggregations, clusters, graph=None, ind=0):
+    def __DrawClassInClust(self, className, fields, clusters, graph=None, ind=0):
         if graph == None:
             graph = self.__uml
 
         if ind == len(clusters):
-            self.__DrawClass (className, fields, compositions, aggregations, graph)
+            self.__DrawClass (className, fields, graph)
         else:
             with graph.subgraph (name=f'cluster{clusters[ind]}') as subgr:
                 subgr.attr(label=clusters[ind], style=Set.clustStyle, color=Set.clustCol)
-                self.__DrawClassInClust (className, fields, compositions, aggregations, clusters, subgr, ind+1)
+                self.__DrawClassInClust (className, fields, clusters, subgr, ind+1)
 
-    def __DrawClass(self, className, fields, compositions, aggregations, graph):
-        graph.node(className, self.__drawer.Draw(className, fields, compositions, aggregations), 
-                    shape='plaintext', fontname=Set.clFont)
+    def __DrawClass(self, className, fields, graph):
+        graph.node(className, self.__drawer.Draw(className, fields), shape='plaintext', fontname=Set.clFont)
 
     def __IsClassDrawn(self, className):
         for cl in self.__classes:
@@ -58,22 +60,26 @@ class UI:
 
     def __DrawMissingClass(self, className):
         if not self.__IsClassDrawn (className):
-            self.__DrawClass(className, [], {}, {}, self.__uml)
+            self.__DrawClass(className, [], self.__uml)
 
     def __DrawInheritances(self, className, parents):
         for parent in parents:
             self.__uml.edge(className, parent, arrowhead=Set.inherStyle, color=Set.arrowCol)
             self.__DrawMissingClass(parent)
 
-    def __DrawCompositions(self, className, compositions):
-        for var in compositions:
-            self.__uml.edge(compositions[var], f'{className}:{var}', arrowhead=Set.compStyle, color=Set.arrowCol)
-            self.__DrawMissingClass(compositions[var])
+    def __DrawCompositions(self, className, variables):
+        for var in variables:
+            if var.HaveType() and not self.__IsClassIgnored(var.GetType()) and not var.IsIgnore:
+                if var.isAggr:
+                    self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
+                else:
+                    self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.compStyle, color=Set.arrowCol)
+                self.__DrawMissingClass(var.GetType())
 
-    def __DrawAggregations(self, className, aggregations):
-        for var in aggregations:
-            self.__uml.edge(aggregations[var], f'{className}:{var}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
-            self.__DrawMissingClass(aggregations[var])
+    def __IsClassIgnored(self, className):
+        for cl in self.__classes:
+            if cl.GetName() == className:
+                return cl.IsIgnore
 
     def __CountClustersSize(self, classes):
         for cl in classes:

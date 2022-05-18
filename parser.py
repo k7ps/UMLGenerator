@@ -1,6 +1,7 @@
 from object_class import *
 from formator import *
 from settings import *
+from modchecker import *
 
 from reader import * 
 
@@ -17,9 +18,7 @@ class PyParser(Parser):
         self.__initDef = "__init__"
         self.__funcDef = "def "
         self.__classDef = "class "
-        self.__indicator = Set.pyUmlSign 
-        self.__aggrIndicator = Set.pyAggrSign
-        self.__clustIndicator = Set.pyClustSign
+        self.__listDef = "list"
         self.__varDef = "self."
         self.__standardTab = 4
 
@@ -64,43 +63,47 @@ class PyParser(Parser):
         tabSpace = ' ' * tab
         name, parents = self.__ReadClassName (code[start])
         fields, clusters = [], []
-        compositions, aggregations = {}, {}
+        ignored = False
+        #compositions, aggregations = {}, {}
         if start > 0:
-            clusters = self.__ReadClusters(code[start-1])
+            clusters, ignored = ModificationChecker.ReadClass(code[start-1])
         for i in range(start+1, len(code)):
             line = code[i]
             if line.startswith (tabSpace):
                 line = line[tab:]
                 if self.__IsMethod(line):
                     if self.__IsInit (line):
-                        init, varbls, comps, aggrs = self.__ReadInit(code, i+1, tab)
+                        init, varbls = self.__ReadInit(code, i+1, tab)
                         fields.append (init)
                         fields += varbls
-                        compositions.update(comps)
-                        aggregations.update(aggrs)
+                        #compositions.update(comps)
+                        #aggregations.update(aggrs)
                     else:
                         fields.append (self.__ReadMethod(line))
                 elif self.__IsVar(line):
-                    var, composition, aggregation = self.__ReadVariable(line)
+                    var = self.__ReadVariable(line)
                     fields.append (var)
-                    if composition != '':
-                        compositions[composition] = var.name
-                    if aggregation != '':
-                        aggregations[aggregation] = var.name
+                    #if composition != '':
+                    #    compositions[composition] = var.name
+                    #if aggregation != '':
+                    #    aggregations[aggregation] = var.name
             else:
                 break
+        #for field in fields:
+        #    print(field.name, sep=' ')
+        #print
         fields = list(set(fields))
-        return ObjectClass(name, fields, ClassInteraction(parents, compositions, aggregations, clusters))
+        return ObjectClass(name, fields, ClassInteraction(parents, clusters), ignored)
 
-    def __ReadClusters(self, line):
-        clustList = line.split(sep=' ')
-        if len(clustList) < 3 or clustList[0] != self.__indicator or clustList[1] != self.__clustIndicator:
-            return []
-        clusters = ''.join(clustList[2:])
-        if clusters.find(',') == -1:
-            return clusters.split(sep=' ')
-        self.__DeleteSpaces(clusters)
-        return clusters.split(sep=',')
+    #def __ReadClusters(self, line):
+    #    clustList = line.split(sep=' ')
+    #    if len(clustList) < 3 or clustList[0] != self.__indicator or clustList[1] != self.__clustIndicator:
+    #        return []
+    #    clusters = ''.join(clustList[2:])
+    #    if clusters.find(',') == -1:
+    #        return clusters.split(sep=' ')
+    #    self.__DeleteSpaces(clusters)
+    #    return clusters.split(sep=',')
 
     def __IsLetterName(self, c):
         return self.__IsFirstLetter(c) or c.isdigit()
@@ -141,56 +144,59 @@ class PyParser(Parser):
             parents = []
         return name.split(sep=':')[0], parents
 
+    def __ReadType(self, typeStr):
+        typeStr = self.__DeleteSpaces(typeStr)
+        while typeStr.startswith(self.__listDef):
+            typeStr = typeStr[len(self.__listDef):]
+            if typeStr.startswith('['):
+                typeStr = typeStr[1:]
+            if typeStr.endswith(']'):
+                typeStr = typeStr[:-1]
+        return typeStr.split(sep='.')[-1]
+
     def __ReadVariable(self, line):
         varStr = self.__DeleteSpaces(line)
         if varStr.startswith(self.__varDef):
             varStr = varStr[len(self.__varDef):]
         name = ''
-        type = ''
+        varType = ''
+        isAggr, ignore = ModificationChecker.ReadVariable(line)
         for i, c in enumerate(varStr):
             if not self.__IsLetterName(c):
                 if c == ':':
-                    type = varStr[i+1:].split(sep='=')[0]
+                    varType = varStr[i+1:].split(sep='=')[0]
                 break
             name += c
-        type = type.split(sep='.')[-1]
-        umlIndicatorInd = varStr.find(self.__indicator)
-        if umlIndicatorInd != -1:
-            end = varStr[umlIndicatorInd + len(self.__indicator):].lower()
-            if self.__aggrIndicator.startswith(end):
-                return Variable(name), '', type
-        return Variable(name), type, ''
+        varType = self.__ReadType(varType)
+        #print(name, varType, isAggr, ignore)
+        return Variable(name, varType, isAggr, ignore)
             
     def __IsInit(self, start_str):
         init_str = self.__DeleteSpaces(start_str)[len(self.__funcDef)-1:]
         return init_str.startswith(self.__initDef)
 
     def __ReadInit(self, code, ind, tab):
-        init = self.__initDef+'()'
-        vars = []
-        comps = {}
-        aggrs = {}
+        init = self.__ReadMethod(code[ind-1])
+        variables = []
         while ind < len(code) and code[ind].startswith(' '*2*tab):
             varStr = self.__DeleteSpaces(code[ind])
             if self.__IsVar(varStr, inInit=True):
-                var, comp, aggr = self.__ReadVariable(varStr)
-                vars.append(var)
-                if comp != '':
-                    comps[var.name] = comp
-                if aggr != '':
-                    aggrs[var.name] = aggr
+                variables.append (self.__ReadVariable(varStr))
             ind+=1
-        return Method(init), vars, comps, aggrs
+        return init, variables
 
-    def __ReadMethod(self, start_str):
-        method_str = self.__DeleteSpaces(start_str)
+    def __ReadMethod(self, startStr):
+        ignore = ModificationChecker.ReadMethod (startStr)
+        method_str = self.__DeleteSpaces (startStr)
         method_str = method_str[len(self.__funcDef)-1:]
-        return Method( method_str.split(sep='(')[0]+'()' )
+        return Method( method_str.split(sep='(')[0]+'()', ignore )
 
 
 #p = PyParser()
 #l = LocReader('test_code.py')
 #code = l.ReadFrom()
+#c = p._PyParser__ReadVariable('     self.__asd:  list[obj.ok] = asda sda sd #@UML aggr; ignore')
+#c = p._PyParser__ReadMethod(' def    okokok(asd a,ads, asd asd):  #@UML aggr; ignore')
 #pcode = p.Parse(code)
 #for cl in pcode:
-#    cl.Print()
+   # cl.Print()

@@ -1,7 +1,8 @@
 class Set: 
     pyUmlSign = '#@UML'
-    pyAggrSign = 'aggregation'
-    pyClustSign = 'clusters'
+    aggrSign = 'aggregation'
+    clustSign = 'clusters'
+    ignoreSign = 'ignore' 
     imgFormat = 'png'
 # Classes
     clFont = 'Arial'
