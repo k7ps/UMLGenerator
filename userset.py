@@ -48,7 +48,7 @@ class UserSettings:
         if mod == self.__ignorePrtCm:
             Set.ignoreProtectedComps = self.__ReadFlag(value)
         if mod == self.__readOnlyDir:
-            Set.ReadOnlyThisDirFiles = self.__ReadFlag(value)
+            Set.readOnlyThisDirFiles = self.__ReadFlag(value)
         if mod == self.__filesSign:
             self.__files = value
         if mod == self.__ignoreFilesSign:
@@ -68,3 +68,12 @@ class UserSettings:
                 self.__ReadMod(mod.lower(), value.lower())
             else:
                 self.__ReadMod(mod.lower(), value)
+
+'''
+us = UserSettings()
+us.Read()
+print('ignPrv',Set.ignorePrivate)
+print('ignPrt',Set.ignoreProtected)
+print('ignPrvCm',Set.ignorePrivateComps)
+print('ignPrtCm',Set.ignoreProtectedComps)
+'''
