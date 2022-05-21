@@ -12,7 +12,7 @@ class UI:
         self.__classes = []
         self.__drawer: ClDrawer = HtmlClDrawer()
         self.__fileName = 'uml'
-        self.__uml = gv.Digraph (self.__fileName, format=Set.imgFormat)
+        self.__uml = gv.Digraph (self.__fileName, engine='dot', format=Set.imgFormat)
         #self.__uml.attr(splines='ortho')
         self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}

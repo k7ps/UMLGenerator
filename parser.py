@@ -111,6 +111,9 @@ class PyParser(Parser):
     def __IsMethod(self, line):
         return line.startswith (self.__funcDef)
 
+    def __DeleteNamespace(self, name):
+        return name.split(sep='.')[-1]
+
     def __ReadClassName(self, line):
         defStr = self.__DeleteSpaces(line)
         haveParents = defStr.find('(') != -1 and defStr.find('(') < defStr.find(':')
@@ -118,6 +121,7 @@ class PyParser(Parser):
         name = parents[0][5:]
         defStr = parents[-1].split(sep=')')[0]
         parents = defStr.split(sep=',')
+        parents = [self.__DeleteNamespace(p) for p in parents]
         if not haveParents:
             parents = []
         return name.split(sep=':')[0], parents
@@ -130,7 +134,7 @@ class PyParser(Parser):
                 typeStr = typeStr[1:]
             if typeStr.endswith(']'):
                 typeStr = typeStr[:-1]
-        return typeStr.split(sep='.')[-1]
+        return self.__DeleteNamespace(typeStr)
 
     def __ReadVariable(self, line):
         varStr = self.__DeleteSpaces(line)
