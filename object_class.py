@@ -2,6 +2,7 @@ from enum import Enum
 
 from settings import *
 
+#@UML clusters ObjectClass
 class ClassInteraction:
     def __init__(self, parents, clusters):
         self.__parents = parents
@@ -18,6 +19,7 @@ class ClassInteraction:
 
 
 
+#@UML clusters ObjectClass
 class Drawable:
     def __init__(self, ignored):
         self.__IsIgnore = ignored
@@ -31,12 +33,14 @@ class Drawable:
         self.__IsIgnore = ignored
 
 
+#@UML clusters ObjectClass
 class AccessMod(Enum):
     PUBLIC = 0
     PROTECTED = 1
     PRIVATE = 2
 
 
+#@UML clusters ObjectClass
 class Field(Drawable):
     def __init__(self, name, ignored):
         super().__init__(ignored)
@@ -87,6 +91,7 @@ class Field(Drawable):
 
 
 
+#@UML clusters ObjectClass
 class Variable(Field):
     def __init__(self, name, varType='', isAggr = False, ignored=False):
         self.__type = varType
@@ -104,12 +109,14 @@ class Variable(Field):
         return self.__type != ''
 
     
+#@UML clusters ObjectClass
 class Method(Field):
     def __init__(self, name, ignored=False):
         super().__init__(name, ignored)
 
 
 
+#@UML clusters ObjectClass
 class ObjectClass(Drawable):
     def __init__(self, name, fields, interactions, ignored=False):
         super().__init__(ignored)
