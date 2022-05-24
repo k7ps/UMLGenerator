@@ -13,7 +13,7 @@ class UI:
         self.__drawer: ClDrawer = HtmlClDrawer()
         self.__fileName = 'uml'
         self.__uml = gv.Digraph (self.__fileName, engine='dot', format=Set.imgFormat)
-        #self.__uml.attr(splines='ortho')
+        #self.__uml.attr(splines='polyline')
         self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}
 
@@ -54,18 +54,24 @@ class UI:
                 return True
         return False
 
+    def __IsNeedToDrawArrow(self, className):
+        isDrawn = self.__IsClassDrawn(className)
+        return isDrawn or (Set.drawUndefClasses and not isDrawn)
+
     def __DrawMissingClass(self, className):
-        if not self.__IsClassDrawn (className):
+        if Set.drawUndefClasses and not self.__IsClassDrawn (className):
             self.__DrawClass(className, [], self.__uml)
 
     def __DrawInheritances(self, className, parents):
         for parent in parents:
-            self.__uml.edge(className, parent, arrowhead=Set.inherStyle, color=Set.arrowCol)
-            self.__DrawMissingClass(parent)
+            if self.__IsNeedToDrawArrow(parent):
+                self.__uml.edge(className, parent, arrowhead=Set.inherStyle, color=Set.arrowCol)
+                self.__DrawMissingClass(parent)
 
     def __DrawCompositions(self, className, variables):
         for var in variables:
-            if var.HaveType() and not self.__IsClassIgnored(var.GetType()) and not var.IsIgnore:
+            if ( var.HaveType() and not self.__IsClassIgnored(var.GetType()) and  
+                    not var.IsIgnore and self.__IsNeedToDrawArrow(var.GetType()) ):
                 if var.isAggr:
                     self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
                 else:

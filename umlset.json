@@ -4,5 +4,6 @@
     "IgnorePrivateComps": "no",
     "IgnoreProtectedComps": "no",
     "ReadFilesOnlyInThisDir": "yes",
+    "DrawUndefinedClasses": "no",
     "Color": "lightblue"    
 }

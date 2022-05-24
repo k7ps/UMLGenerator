@@ -11,6 +11,7 @@ class Set:
     ignorePrivateComps = False
     ignoreProtectedComps = False
     readOnlyThisDirFiles = True
+    drawUndefClasses = True
     classCol = 'yellow'
     #TODO
     ignoreParentsFields = False
