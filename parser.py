@@ -16,7 +16,7 @@ class PyParser(Parser):
         self.__initDef = "__init__"
         self.__funcDef = "def "
         self.__classDef = "class "
-        self.__listDef = "list"
+        #self.__listDef = "list"
         self.__varDef = "self."
         self.__standardTab = 4
 
@@ -128,12 +128,15 @@ class PyParser(Parser):
 
     def __ReadType(self, typeStr):
         typeStr = self.__DeleteSpaces(typeStr)
-        while typeStr.startswith(self.__listDef):
-            typeStr = typeStr[len(self.__listDef):]
-            if typeStr.startswith('['):
-                typeStr = typeStr[1:]
-            if typeStr.endswith(']'):
-                typeStr = typeStr[:-1]
+        if typeStr.find(',') != -1:
+            typeStr = typeStr.split('[')[0]
+        else:
+            openbr = typeStr.find('[')
+            closebr = typeStr.rfind(']')
+            while openbr != -1 and closebr != -1:
+                typeStr = typeStr[openbr+1:closebr]
+                openbr = typeStr.find('[')
+                closebr = typeStr.rfind(']')
         return self.__DeleteNamespace(typeStr)
 
     def __ReadVariable(self, line):
