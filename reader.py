@@ -17,6 +17,6 @@ class LocReader(Reader):
         readed_code = []
         with open(self._path, encoding=self._encode) as f:
             for i in f:
-                readed_code.append(i) # прочитали весь код построчно
+                readed_code.append(i)
         return readed_code
 

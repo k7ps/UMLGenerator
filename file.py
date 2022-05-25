@@ -1,3 +1,5 @@
+from os import path
+
 from object_class import *
 from parser import *
 from reader import *
@@ -14,6 +16,11 @@ class PyLocFile(File, LocReader, PyParser):
         LocReader.__init__(self, path, 'utf-8')
         File.__init__(self)
         PyParser.__init__(self)
-
+    
     def Read(self):
         self._classes = self.Parse(self.ReadFrom())
+
+        fileName = path.basename(self._path)
+        fileName = path.splitext(fileName)[0]
+        for i in range(len(self._classes)):
+            self._classes[i].SetFileName (fileName) 

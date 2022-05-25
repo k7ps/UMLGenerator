@@ -5,5 +5,7 @@
     "IgnoreProtectedComps": "no",
     "ReadFilesOnlyInThisDir": "yes",
     "DrawUndefinedClasses": "no",
+    "GroupByFiles": "no",
+    "DrawOneFileGroups": "no",
     "Color": "lightblue"    
 }

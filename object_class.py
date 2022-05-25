@@ -118,11 +118,18 @@ class Method(Field):
 
 #@UML clusters ObjectClass
 class ObjectClass(Drawable):
-    def __init__(self, name, fields, interactions, ignored=False):
+    def __init__(self, name, fields, interactions, ignored=False, filename = ''):
         super().__init__(ignored)
         self.__name = name
         self.__fields: list[Field] = fields
         self.__interactions: ClassInteraction = interactions
+        self.__fileName = filename
+    
+    def SetFileName(self, name):
+        self.__fileName = name
+        
+        if Set.groupByFiles:
+            self.SetClusters([name])
 
     def Get(self):
         return (self.__name, self.__fields)

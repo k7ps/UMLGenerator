@@ -26,7 +26,7 @@ class UI:
         for cl in self.__classes:
             if cl.IsIgnore:
                 continue
-            self.__SortClusters (cl)
+            self.__UpdateClusters (cl)
             self.__DrawClassInClust (*cl.Get(), cl.GetClusters())
             self.__DrawInheritances (cl.GetName(), cl.GetParents())
             self.__DrawCompositions (cl.GetName(), cl.GetVars())
@@ -85,11 +85,22 @@ class UI:
 
     def __CountClustersSize(self, classes):
         for cl in classes:
+            if cl.IsIgnore:
+                continue
             for cluster in cl.GetClusters():
                 if self.__clusterSize.get(cluster) == None:
                     self.__clusterSize[cluster] = 1
                 else:
                     self.__clusterSize[cluster] += 1
+
+    def __UpdateClusters(self, objClass):
+        if Set.groupByFiles:
+            if not Set.drawOneFileGroup:
+                cluster = objClass.GetClusters()[0]
+                if self.__clusterSize[cluster] == 1:
+                    objClass.SetClusters ([])
+        else:
+            self.__SortClusters(objClass)
 
     def __SortClusters(self, objClass):
         clusters = objClass.GetClusters()
