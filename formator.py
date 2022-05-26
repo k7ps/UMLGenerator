@@ -1,4 +1,7 @@
+import re
+
 from settings import *
+from reader import *
 
 #@UML clusters Parsing
 class Formator:
@@ -13,13 +16,26 @@ class Formator:
 class PyFormator(Formator):
     _comSign = '#'
     _umlSign = Set.pyUmlSign
+    _decoSign = '@'
 
     def FormatCode(code):
         formatted_code = code[:]
+        PyFormator.__DeleteDecorators (formatted_code)
         PyFormator.__DeleteComments (formatted_code)
-        PyFormator.__DeleteEmptyLines (formatted_code)
         PyFormator.__CombineSepLines (formatted_code)
+        PyFormator.__DeleteStrings (formatted_code)
+        PyFormator.__DeleteEmptyLines (formatted_code)
         return formatted_code
+    
+    def __DeleteDecorators(code):
+        for i in range(len(code)):
+            code[i] = re.sub(f'^{PyFormator._decoSign}\s*\S+\s*', '', code[i])
+            code[i] = re.sub(f'[^{PyFormator._comSign}]{PyFormator._decoSign}\s*\S+\s*', ' ', code[i])
+
+    def __DeleteStrings(code):
+        for i in range(len(code)):
+            for j in ['"', "'"]:
+                code[i] = re.sub(f'{j}.*{j}', '', code[i])
 
     def __DeleteComments(code):
         for i in range(len(code)):
