@@ -1,6 +1,6 @@
 {
-    "IgnorePrivate": "yes",
-    "IgnoreProtected": "yes",
+    "IgnorePrivate": "no",
+    "IgnoreProtected": "no",
     "IgnorePrivateComps": "no",
     "IgnoreProtectedComps": "no",
     "ReadFilesOnlyInThisDir": "yes",

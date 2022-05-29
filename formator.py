@@ -20,8 +20,8 @@ class PyFormator(Formator):
 
     def FormatCode(code):
         formatted_code = code[:]
-        PyFormator.__DeleteDecorators (formatted_code)
         PyFormator.__DeleteComments (formatted_code)
+        PyFormator.__DeleteDecorators (formatted_code)
         PyFormator.__CombineSepLines (formatted_code)
         PyFormator.__DeleteStrings (formatted_code)
         PyFormator.__DeleteEmptyLines (formatted_code)

@@ -14,9 +14,8 @@ class Parser:
 class PyParser(Parser):           
     def __init__(self):
         self.__initDef = "__init__"
-        self.__funcDef = "def "
+        self.__funcDef = "def"
         self.__classDef = "class "
-        #self.__listDef = "list"
         self.__varDef = "self."
         self.__standardTab = 4
 
@@ -69,12 +68,11 @@ class PyParser(Parser):
             if line.startswith (tabSpace):
                 line = line[tab:]
                 if self.__IsMethod(line):
-                    if self.__IsInit (line):
-                        init, varbls = self.__ReadInit(code, i+1, tab)
-                        fields.append (init)
+                    method = self.__ReadMethod(line)
+                    fields.append (method)
+                    if self.__IsInit (method.name):
+                        varbls = self.__ReadInit(code, i+1, tab)
                         fields += varbls
-                    else:
-                        fields.append (self.__ReadMethod(line))
                 elif self.__IsVar(line):
                     var = self.__ReadVariable(line)
                     fields.append (var)
@@ -109,7 +107,8 @@ class PyParser(Parser):
         return False
 
     def __IsMethod(self, line):
-        return line.startswith (self.__funcDef)
+        haveHardDef = line.find(f' {self.__funcDef} ') != -1 and not line.startswith(' ')
+        return line.startswith(f'{self.__funcDef} ') or haveHardDef
 
     def __DeleteNamespace(self, name):
         return name.split(sep='.')[-1]
@@ -155,22 +154,35 @@ class PyParser(Parser):
         varType = self.__ReadType(varType)
         return Variable(name, varType, isAggr, ignore)
             
-    def __IsInit(self, start_str):
-        init_str = self.__DeleteSpaces(start_str)[len(self.__funcDef)-1:]
-        return init_str.startswith(self.__initDef)
+    def __IsInit(self, name):
+        return name == f'{self.__initDef}()'
 
     def __ReadInit(self, code, ind, tab):
-        init = self.__ReadMethod(code[ind-1])
         variables = []
         while ind < len(code) and code[ind].startswith(' '*2*tab):
             varStr = self.__DeleteSpaces(code[ind])
             if self.__IsVar(varStr, inInit=True):
                 variables.append (self.__ReadVariable(varStr))
             ind+=1
-        return init, variables
+        return variables
 
     def __ReadMethod(self, startStr):
         ignore = ModificationChecker.ReadMethod (startStr)
-        method_str = self.__DeleteSpaces (startStr)
-        method_str = method_str[len(self.__funcDef)-1:]
-        return Method( method_str.split(sep='(')[0]+'()', ignore )
+        name = ''
+        words = startStr.split()
+        for i, word in enumerate(words):
+            if word.find('(') != -1:
+                if word.startswith('('):
+                    if i != 0:
+                        name = words[i-1]
+                    else:
+                        continue
+                else:
+                    name = word.split(sep='(')[0]
+                break
+        return Method( f'{name}()', ignore )
+
+#p = PyParser()
+#st = 'def __init__(asdasd):'
+#print(p._PyParser__IsInit(st))
+#print(p._PyParser__ReadMethod(st).name)
