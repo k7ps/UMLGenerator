@@ -84,19 +84,6 @@ class Field(Drawable):
         return type(self) is Method
 
 
-    def __repr__(self):
-        return "Field(%s, %s)" % (self.name, self.modifier)
-
-    def __eq__(self, other):
-        return self.name == other.name
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def __hash__(self):
-        return hash(self.__repr__())
-
-
 
 #@UML clusters ObjectClass
 class Variable(Field):
@@ -128,10 +115,21 @@ class ObjectClass(Drawable):
     def __init__(self, name, fields, interactions, ignored=False, filename = ''):
         super().__init__(ignored)
         self.__name = name
-        self.__fields: list[Field] = fields
+        self.__fields: list[Field] = self.__DeleteSame (fields)
         self.__interactions: ClassInteraction = interactions
         self.__fileName = filename
     
+    def __DeleteSame(self, array):
+        res = []
+        for x in array:
+            for y in array:
+                if x.name == y.name:
+                    break
+            else:
+                continue
+            res.append(x)
+        return res
+
     def SetFileName(self, name):
         self.__fileName = name
         

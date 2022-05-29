@@ -78,7 +78,6 @@ class PyParser(Parser):
                     fields.append (var)
             else:
                 break
-        fields = list(set(fields))
         return ObjectClass(name, fields, ClassInteraction(parents, clusters), ignored)
 
     def __IsLetterName(self, c):
