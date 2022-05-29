@@ -30,6 +30,7 @@ class UserSettings:
         self.__drawUndefCl = 'drawundefinedclasses'
         self.__groupByFiles = 'groupbyfiles'
         self.__drawOneFileGroup = 'drawonefilegroups'
+        self.__removeAccessPrefix = 'removeaccessprefix'
         self.__filesSign = 'files'
         self.__ignoreFilesSign = 'ignorefiles'
         self.__colorSign = 'color'
@@ -69,6 +70,8 @@ class UserSettings:
             Set.groupByFiles = self.__ReadFlag(value)
         elif mod == self.__drawOneFileGroup:
             Set.drawOneFileGroup = self.__ReadFlag(value)
+        elif mod == self.__removeAccessPrefix:
+            Set.removeAccessPrefix = self.__ReadFlag(value)
         elif mod == self.__filesSign:
             self.__files = value
         elif mod == self.__ignoreFilesSign:

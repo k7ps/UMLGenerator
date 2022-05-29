@@ -14,6 +14,7 @@ class Set:
     drawUndefClasses = True
     groupByFiles = False
     drawOneFileGroup = False
+    removeAccessPrefix = False
     classCol = 'yellow'
     #TODO
     ignoreParentsFields = False

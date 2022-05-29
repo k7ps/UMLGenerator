@@ -180,7 +180,7 @@ class PyParser(Parser):
                 else:
                     name = word.split(sep='(')[0]
                 break
-        return Method( f'{name}()', ignore )
+        return Method (name, ignore)
 
 #p = PyParser()
 #st = 'def __init__(asdasd):'

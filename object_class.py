@@ -62,6 +62,13 @@ class Field(Drawable):
                 else:
                     self.IsIgnore = True
 
+        if Set.removeAccessPrefix:
+            if self.__modifier == AccessMod.PRIVATE:
+                if not self.__name.endswith('__()'):
+                    self.__name = self.__name[2:]
+            if self.__modifier == AccessMod.PROTECTED:
+                self.__name = self.__name[1:]
+
     @property
     def modifier(self):
         return self.__modifier
@@ -112,7 +119,7 @@ class Variable(Field):
 #@UML clusters ObjectClass
 class Method(Field):
     def __init__(self, name, ignored=False):
-        super().__init__(name, ignored)
+        super().__init__(name+'()', ignored)
 
 
 

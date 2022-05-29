@@ -7,14 +7,14 @@ from ui import *
 
 class Controller:
     def __init__(self):
-        self.__userSet: UserSettings = UserSettings()
-        self.__userSet.Read()
+        self.__userSettings: UserSettings = UserSettings()
+        self.__userSettings.Read()
 
         self.__engine: Engine = Engine(self.__GetPaths()) 
         self.__ui: UI = UI()
     
     def __GetPaths(self):
-        paths = self.__userSet.files
+        paths = self.__userSettings.files
         curDir = os.path.abspath(os.curdir)
         if len(paths) == 0:
             paths = self.__FindAllPaths(curDir)
@@ -22,7 +22,7 @@ class Controller:
             for i in range(len(paths)):
                 paths[i] = os.path.join(curDir, paths[i])
 
-        for ignorePath in self.__userSet.ignoreFiles:
+        for ignorePath in self.__userSettings.ignoreFiles:
             ignorePath = os.path.join(curDir, ignorePath)
             if ignorePath in paths:
                 paths.remove(ignorePath)

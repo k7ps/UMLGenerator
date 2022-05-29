@@ -1,11 +1,12 @@
 {
-    "IgnorePrivate": "no",
-    "IgnoreProtected": "no",
+    "IgnorePrivate": "yes",
+    "IgnoreProtected": "yes",
     "IgnorePrivateComps": "no",
     "IgnoreProtectedComps": "no",
     "ReadFilesOnlyInThisDir": "yes",
     "DrawUndefinedClasses": "no",
     "GroupByFiles": "no",
     "DrawOneFileGroups": "no",
+    "RemoveAccessPrefix": "yes",
     "Color": "lightblue"    
 }
