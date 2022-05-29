@@ -122,12 +122,12 @@ class ObjectClass(Drawable):
     def __DeleteSame(self, array):
         res = []
         for x in array:
-            for y in array:
+            have = False
+            for y in res:
                 if x.name == y.name:
-                    break
-            else:
-                continue
-            res.append(x)
+                    have =True
+            if not have:
+                res.append(x)
         return res
 
     def SetFileName(self, name):

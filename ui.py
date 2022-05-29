@@ -65,7 +65,7 @@ class UI:
     def __DrawInheritances(self, className, parents):
         for parent in parents:
             if self.__IsNeedToDrawArrow(parent):
-                self.__uml.edge(className, parent, arrowhead=Set.inherStyle, color=Set.arrowCol)
+                self.__uml.edge(parent, className, arrowhead='none', arrowtail=Set.inherStyle, dir='both', color=Set.arrowCol)
                 self.__DrawMissingClass(parent)
 
     def __DrawCompositions(self, className, variables):
@@ -73,9 +73,13 @@ class UI:
             if ( var.HaveType() and not self.__IsClassIgnored(var.GetType()) and  
                     not var.IsIgnore and self.__IsNeedToDrawArrow(var.GetType()) ):
                 if var.isAggr:
-                    self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
+                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none',arrowtail=Set.aggrStyle, dir='both', 
+                            color=Set.arrowCol)
+                    #self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
                 else:
-                    self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.compStyle, color=Set.arrowCol)
+                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none',arrowtail=Set.compStyle, dir='both', 
+                            color=Set.arrowCol)
+                    #self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.compStyle, color=Set.arrowCol)
                 self.__DrawMissingClass(var.GetType())
 
     def __IsClassIgnored(self, className):
