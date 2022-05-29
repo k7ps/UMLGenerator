@@ -3,13 +3,13 @@ from object_class import *
 
 
 #@UML clusters Drawing
-class ClDrawer:
+class ClassDrawer:
     def Draw(self, className, fields):
         pass
 
 
 #@UML clusters Drawing
-class HtmlClDrawer(ClDrawer):
+class HtmlClassDrawer(ClassDrawer):
     def __init__(self):
         self.__roundTable = f'<<table border="{Set.clBorder}" style="{Set.clStyle}">'
         self.__endTable = '</table>>'
@@ -66,7 +66,6 @@ class HtmlClDrawer(ClDrawer):
         if upperbound:
             return self.__AddCell ('', upperbound=True, height=Set.emptyBoundCellHeight, border=Set.splitThick)
         return self.__AddCell ('', height=Set.emptyCellHeight)
-
 
 
     def __AddCell(self, name, align="left", upperbound=False, border=0, bgcolor='transparent', 

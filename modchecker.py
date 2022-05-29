@@ -7,7 +7,7 @@ class ModificationChecker:
     clustSign = Set.clustSign
     ignoreSign = Set.ignoreSign
     
-    def ReadLine(line):
+    def __ReadLine(line):
         mods = {}
         start = line.find(ModificationChecker.umlSign)
         if start == -1:
@@ -15,10 +15,10 @@ class ModificationChecker:
         line = line[start+len(ModificationChecker.umlSign):]
         signs = line.split(sep=';')
         for i in range(len(signs)):
-            mods.update (ModificationChecker.ReadSign(signs[i]))
+            mods.update (ModificationChecker.__ReadSign(signs[i]))
         return mods
         
-    def ReadSign(signStr):
+    def __ReadSign(signStr):
         sign = signStr.split()
         sign[0] = sign[0].lower()
         if ModificationChecker.aggrSign.startswith (sign[0]):
@@ -31,35 +31,35 @@ class ModificationChecker:
             return {ModificationChecker.clustSign: clusters}
         return {}
 
-    def GetClusters(mods):
+    def __GetClusters(mods):
         clusters = []
         if ModificationChecker.clustSign in mods:
             clusters = mods[ModificationChecker.clustSign]
         return clusters
 
-    def GetIgnore(mods):
+    def __GetIgnore(mods):
         if ModificationChecker.ignoreSign in mods:
             return mods[ModificationChecker.ignoreSign]
         return False
 
-    def GetAggr(mods):
+    def __GetAggr(mods):
         if ModificationChecker.aggrSign in mods:
             return mods[ModificationChecker.aggrSign]
         return False
 
     def ReadClass(line):
-        mods = ModificationChecker.ReadLine(line)
-        clusters = ModificationChecker.GetClusters(mods)
-        ignore = ModificationChecker.GetIgnore(mods)
+        mods = ModificationChecker.__ReadLine(line)
+        clusters = ModificationChecker.__GetClusters(mods)
+        ignore = ModificationChecker.__GetIgnore(mods)
         return clusters, ignore
 
     def ReadMethod(line):
-        mods = ModificationChecker.ReadLine(line)
-        ignore = ModificationChecker.GetIgnore(mods)
+        mods = ModificationChecker.__ReadLine(line)
+        ignore = ModificationChecker.__GetIgnore(mods)
         return ignore
 
     def ReadVariable(line):  
-        mods = ModificationChecker.ReadLine(line)
-        aggr = ModificationChecker.GetAggr(mods)
-        ignore = ModificationChecker.GetIgnore(mods)
+        mods = ModificationChecker.__ReadLine(line)
+        aggr = ModificationChecker.__GetAggr(mods)
+        ignore = ModificationChecker.__GetIgnore(mods)
         return aggr, ignore

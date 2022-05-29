@@ -10,7 +10,7 @@ from drawer import *
 class UI:
     def __init__(self):
         self.__classes = []
-        self.__drawer: ClDrawer = HtmlClDrawer()
+        self.__drawer: ClassDrawer = HtmlClassDrawer()
         self.__fileName = 'uml'
         self.__uml = gv.Digraph (self.__fileName, engine='dot', format=Set.imgFormat)
         #self.__uml.attr(splines='polyline')

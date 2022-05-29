@@ -10,7 +10,7 @@ class Engine:
     
     def Read(self):
         for file in self.__files:
-            file.Read()
+            file.ReadClasses()
 
     def GetClasses(self):
         classes = []

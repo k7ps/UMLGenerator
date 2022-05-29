@@ -17,8 +17,8 @@ class PyLocFile(File, LocReader, PyParser):
         File.__init__(self)
         PyParser.__init__(self)
     
-    def Read(self):
-        self._classes = self.Parse(self.ReadFrom())
+    def ReadClasses(self):
+        self._classes = self.Parse(self.ReadCode())
 
         fileName = path.basename(self._path)
         fileName = path.splitext(fileName)[0]
