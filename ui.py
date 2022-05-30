@@ -17,13 +17,18 @@ class UI:
         self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}
 
-    def SetClasses(self, classes):
+    @property
+    def classes(self):
+        return self.__classes
+
+    @classes.setter
+    def classes(self, classes):
         self.__classes = classes
 
     def DrawUML(self):
-        self.__CountClustersSize(self.__classes)
+        self.__CountClustersSize(self.classes)
 
-        for cl in self.__classes:
+        for cl in self.classes:
             if cl.IsIgnore:
                 continue
             self.__UpdateClusters (cl)

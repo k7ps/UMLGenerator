@@ -12,7 +12,8 @@ class Engine:
         for file in self.__files:
             file.ReadClasses()
 
-    def GetClasses(self):
+    @property
+    def classes(self):
         classes = []
         for file in self.__files:
             classes += file.GetClasses()
