@@ -93,7 +93,7 @@ _By default_ - ```false```
 - #### ReadFilesOnlyInThisDir
 If enabled, reads files only in this directory, otherwise goes recursively through all folders
 
-_By default_ - ```true```
+_By default_ - ```false```
 - #### DrawUndefinedClasses
 Enable drawing classes that are someone's composition/aggregation or parent class, but have no declaration in the code
 
@@ -101,7 +101,7 @@ _By default_ - ```true```
 - #### GroupByFiles
 Enables grouping of classes into groups in the same way as they are defined in files
 
-_By default_ - ```false```
+_By default_ - ```true```
 - #### DrawOneClassGroup
 If _GroupByFiles_ enabled, enable drawing group (not its classes) which contains one class
 
@@ -109,7 +109,7 @@ _By default_ - ```false```
 - #### RemoveAccessPrefix
 Remove access prefixes from private and protected fields
 
-_By default_ - ```false```
+_By default_ - ```true```
 - #### AlternativeEngine
 Enable alternative graphviz engine. By default it is DOT engine, the alternative - FDP. Almost always FDP works much worse
 

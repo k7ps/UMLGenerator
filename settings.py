@@ -11,11 +11,11 @@ class Set:
     ignoreProtected = True
     ignorePrivateComps = False
     ignoreProtectedComps = False
-    readOnlyThisDirFiles = True
+    readOnlyThisDirFiles = False
     drawUndefClasses = True
-    groupByFiles = False
+    groupByFiles = True
     drawOneClassGroup = False
-    removeAccessPrefix = False
+    removeAccessPrefix = True
     altEngine = False
     classCol = 'yellow'
     #TODO
