@@ -102,7 +102,7 @@ class UserSettings:
                     raise JSONParsingError(f'Modification must be string: {mod}')
                 if type(value) is str:
                     self.__ReadMod(mod.lower(), value.lower())
-                elif type(value) is str:
+                elif type(value) is list:
                     self.__ReadMod(mod.lower(), value)
                 else:
                     raise JSONParsingError(f'Value must be string or list: {value}')
