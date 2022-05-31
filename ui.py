@@ -12,7 +12,7 @@ class UI:
         self.__classes = []
         self.__drawer: ClassDrawer = HtmlClassDrawer()
         self.__fileName = 'uml'
-        self.__uml = gv.Digraph (self.__fileName, engine='dot', format=Set.imgFormat)
+        self.__uml = gv.Digraph (self.__fileName, engine=('fdp' if Set.altEngine else 'dot'), format=Set.imgFormat)
         #self.__uml.attr(splines='polyline')
         self.__uml.attr (fontname=Set.clustFont)
         self.__clusterSize = {}
@@ -70,7 +70,8 @@ class UI:
     def __DrawInheritances(self, className, parents):
         for parent in parents:
             if self.__IsNeedToDrawArrow(parent):
-                self.__uml.edge(parent, className, arrowhead='none', arrowtail=Set.inherStyle, dir='both', color=Set.arrowCol)
+                self.__uml.edge(parent, className, arrowhead='none', arrowtail=Set.inherStyle, 
+                        dir='both', color=Set.arrowCol)
                 self.__DrawMissingClass(parent)
 
     def __DrawCompositions(self, className, variables):
@@ -78,13 +79,11 @@ class UI:
             if ( var.HaveType() and not self.__IsClassIgnored(var.GetType()) and  
                     not var.IsIgnore and self.__IsNeedToDrawArrow(var.GetType()) ):
                 if var.isAggr:
-                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none',arrowtail=Set.aggrStyle, dir='both', 
-                            color=Set.arrowCol)
-                    #self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.aggrStyle, color=Set.arrowCol)
+                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none', 
+                            arrowtail=Set.aggrStyle, dir='both', color=Set.arrowCol)
                 else:
-                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none',arrowtail=Set.compStyle, dir='both', 
-                            color=Set.arrowCol)
-                    #self.__uml.edge(var.GetType(), f'{className}:{var.name}', arrowhead=Set.compStyle, color=Set.arrowCol)
+                    self.__uml.edge(f'{className}:{var.name}', var.GetType(), arrowhead='none',
+                            arrowtail=Set.compStyle, dir='both', color=Set.arrowCol)
                 self.__DrawMissingClass(var.GetType())
 
     def __IsClassIgnored(self, className):
@@ -104,7 +103,7 @@ class UI:
 
     def __UpdateClusters(self, objClass):
         if Set.groupByFiles:
-            if not Set.drawOneFileGroup:
+            if not Set.drawOneClassGroup:
                 cluster = objClass.GetClusters()[0]
                 if self.__clusterSize[cluster] == 1:
                     objClass.SetClusters ([])

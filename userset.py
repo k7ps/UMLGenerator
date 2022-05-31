@@ -29,8 +29,9 @@ class UserSettings:
         self.__readOnlyDir = 'readfilesonlyinthisdir'
         self.__drawUndefCl = 'drawundefinedclasses'
         self.__groupByFiles = 'groupbyfiles'
-        self.__drawOneFileGroup = 'drawonefilegroups'
+        self.__drawOneClassGroup = 'drawoneclassgroups'
         self.__removeAccessPrefix = 'removeaccessprefix'
+        self.__altEngine = 'alternativeengine'
         self.__filesSign = 'files'
         self.__ignoreFilesSign = 'ignorefiles'
         self.__colorSign = 'color'
@@ -68,10 +69,12 @@ class UserSettings:
             Set.drawUndefClasses = self.__ReadFlag(value)
         elif mod == self.__groupByFiles:
             Set.groupByFiles = self.__ReadFlag(value)
-        elif mod == self.__drawOneFileGroup:
-            Set.drawOneFileGroup = self.__ReadFlag(value)
+        elif mod == self.__drawOneClassGroup:
+            Set.drawOneClassGroup = self.__ReadFlag(value)
         elif mod == self.__removeAccessPrefix:
             Set.removeAccessPrefix = self.__ReadFlag(value)
+        elif mod == self.__altEngine:
+            Set.altEngine = self.__ReadFlag(value)
         elif mod == self.__filesSign:
             self.__files = value
         elif mod == self.__ignoreFilesSign:

@@ -11,6 +11,9 @@ class File:
     def GetClasses(self):
         return self._classes
 
+    def ReadClasses(self):
+        pass
+
 class PyLocFile(File, LocReader, PyParser):
     def __init__(self, path):
         LocReader.__init__(self, path, 'utf-8')

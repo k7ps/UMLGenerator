@@ -1,12 +1,13 @@
 {
-    "IgnorePrivate": "yes",
-    "IgnoreProtected": "yes",
-    "IgnorePrivateComps": "no",
-    "IgnoreProtectedComps": "no",
-    "ReadFilesOnlyInThisDir": "yes",
-    "DrawUndefinedClasses": "no",
-    "GroupByFiles": "no",
-    "DrawOneFileGroups": "no",
-    "RemoveAccessPrefix": "yes",
-    "Color": "palegreen"    
+    "IgnorePrivate":           "true",
+    "IgnoreProtected":         "true",
+    "IgnorePrivateComps":     "false",
+    "IgnoreProtectedComps":   "false",
+    "ReadFilesOnlyInThisDir": "false",
+    "DrawUndefinedClasses":   "false",
+    "GroupByFiles":            "true",
+    "DrawOneClassGroups":      "true",
+    "RemoveAccessPrefix":      "true",
+    "AlternativeEngine":      "false", 
+    "Color":              "palegreen"    
 }
