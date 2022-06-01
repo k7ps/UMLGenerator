@@ -7,6 +7,11 @@ App that generates UML diagram based on your code
 ## Setup
 For the UMLGenerator to work, you should download [_Graphviz_](https://graphviz.org/download/)
 
+**Note**: Remember add Graphviz to the system path 
+
+![alt_text](https://user-images.githubusercontent.com/95648801/171372898-1b155a42-98c4-4411-9bed-2a7afb66062f.png)
+
+
 ## Modification syntax
 - #### Ignore
 Write ```#@UML ignore``` before defintition of the class, so that it is ignored:
